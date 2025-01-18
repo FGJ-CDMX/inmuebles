@@ -1,0 +1,2479 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1,width=device-width">
+        <meta name="mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <link rel="stylesheet" href="css/leaflet.css">
+        <link rel="stylesheet" href="css/L.Control.Layers.Tree.css">
+        <link rel="stylesheet" href="css/L.Control.Locate.min.css">
+        <link rel="stylesheet" href="css/qgis2web.css">
+        <link rel="stylesheet" href="css/fontawesome-all.min.css">
+        <link rel="stylesheet" href="css/leaflet-control-geocoder.Geocoder.css">
+        <link rel="stylesheet" href="css/leaflet-measure.css">
+        <style>
+        html, body, #map {
+            width: 100%;
+            height: 100%;
+            padding: 0;
+            margin: 0;
+        }
+        </style>
+        <title>INMUEBLES FGJCDMX</title>
+    </head>
+    <body>
+        <div id="map">
+        </div>
+        <script src="js/qgis2web_expressions.js"></script>
+        <script src="js/leaflet.js"></script>
+        <script src="js/L.Control.Layers.Tree.min.js"></script>
+        <script src="js/L.Control.Locate.min.js"></script>
+        <script src="js/leaflet.rotatedMarker.js"></script>
+        <script src="js/leaflet.pattern.js"></script>
+        <script src="js/leaflet-hash.js"></script>
+        <script src="js/Autolinker.min.js"></script>
+        <script src="js/rbush.min.js"></script>
+        <script src="js/labelgun.min.js"></script>
+        <script src="js/labels.js"></script>
+        <script src="js/leaflet-control-geocoder.Geocoder.js"></script>
+        <script src="js/leaflet-measure.js"></script>
+        <script src="data/Alcaldas_1.js"></script>
+        <script src="data/Zonificacin_2.js"></script>
+        <script src="data/Xochimilco_3.js"></script>
+        <script src="data/VenustianoCarranza_4.js"></script>
+        <script src="data/Tlhuac_5.js"></script>
+        <script src="data/Tlalpan_6.js"></script>
+        <script src="data/MilpaAlta_7.js"></script>
+        <script src="data/MagdalenaContreras_8.js"></script>
+        <script src="data/MiguelHidalgo_9.js"></script>
+        <script src="data/Iztapalapa_10.js"></script>
+        <script src="data/Iztacalco_11.js"></script>
+        <script src="data/GustavoAMadero_12.js"></script>
+        <script src="data/Cuauhtmoc_13.js"></script>
+        <script src="data/Coyoacn_14.js"></script>
+        <script src="data/Cuajimalpa_15.js"></script>
+        <script src="data/BenitoJurez_16.js"></script>
+        <script src="data/Azcapotzalco_17.js"></script>
+        <script src="data/lvaroObregn_18.js"></script>
+        <script>
+        var map = L.map('map', {
+            zoomControl:false, maxZoom:28, minZoom:1
+        }).fitBounds([[19.038560581012852,-99.67868563092041],[19.611579318818425,-98.5573940400345]]);
+        var hash = new L.Hash(map);
+        map.attributionControl.setPrefix('<a href="https://github.com/tomchadwin/qgis2web" target="_blank">qgis2web</a> &middot; <a href="https://leafletjs.com" title="A JS library for interactive maps">Leaflet</a> &middot; <a href="https://qgis.org">QGIS</a>');
+        var autolinker = new Autolinker({truncate: {length: 30, location: 'smart'}});
+        // remove popup's row if "visible-with-data"
+        function removeEmptyRowsFromPopupContent(content, feature) {
+         var tempDiv = document.createElement('div');
+         tempDiv.innerHTML = content;
+         var rows = tempDiv.querySelectorAll('tr');
+         for (var i = 0; i < rows.length; i++) {
+             var td = rows[i].querySelector('td.visible-with-data');
+             var key = td ? td.id : '';
+             if (td && td.classList.contains('visible-with-data') && feature.properties[key] == null) {
+                 rows[i].parentNode.removeChild(rows[i]);
+             }
+         }
+         return tempDiv.innerHTML;
+        }
+        // add class to format popup if it contains media
+		function addClassToPopupIfMedia(content, popup) {
+			var tempDiv = document.createElement('div');
+			tempDiv.innerHTML = content;
+			if (tempDiv.querySelector('td img')) {
+				popup._contentNode.classList.add('media');
+					// Delay to force the redraw
+					setTimeout(function() {
+						popup.update();
+					}, 10);
+			} else {
+				popup._contentNode.classList.remove('media');
+			}
+		}
+        var title = new L.Control({'position':'topright'});
+        title.onAdd = function (map) {
+            this._div = L.DomUtil.create('div', 'info');
+            this.update();
+            return this._div;
+        };
+        title.update = function () {
+            this._div.innerHTML = '<h2>INMUEBLES FGJCDMX</h2>';
+        };
+        title.addTo(map);
+        var zoomControl = L.control.zoom({
+            position: 'topleft'
+        }).addTo(map);
+        L.control.locate({locateOptions: {maxZoom: 19}}).addTo(map);
+        var measureControl = new L.Control.Measure({
+            position: 'topleft',
+            primaryLengthUnit: 'meters',
+            secondaryLengthUnit: 'kilometers',
+            primaryAreaUnit: 'sqmeters',
+            secondaryAreaUnit: 'hectares'
+        });
+        measureControl.addTo(map);
+        document.getElementsByClassName('leaflet-control-measure-toggle')[0].innerHTML = '';
+        document.getElementsByClassName('leaflet-control-measure-toggle')[0].className += ' fas fa-ruler';
+        var bounds_group = new L.featureGroup([]);
+        function setBounds() {
+        }
+        map.createPane('pane_Positron_0');
+        map.getPane('pane_Positron_0').style.zIndex = 400;
+        var layer_Positron_0 = L.tileLayer('https://a.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png', {
+            pane: 'pane_Positron_0',
+            opacity: 1.0,
+            attribution: '<a href="https://cartodb.com/basemaps/">Map tiles by CartoDB, under CC BY 3.0. Data by OpenStreetMap, under ODbL.</a>',
+            minZoom: 1,
+            maxZoom: 28,
+            minNativeZoom: 0,
+            maxNativeZoom: 20
+        });
+        layer_Positron_0;
+        map.addLayer(layer_Positron_0);
+        function pop_Alcaldas_1(feature, layer) {
+            var popupContent = '<table>\
+                </table>';
+            var content = removeEmptyRowsFromPopupContent(popupContent, feature);
+			layer.on('popupopen', function(e) {
+				addClassToPopupIfMedia(content, e.popup);
+			});
+			layer.bindPopup(content, { maxHeight: 400 });
+        }
+
+        function style_Alcaldas_1_0() {
+            return {
+                pane: 'pane_Alcaldas_1',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 1.0,
+                fillOpacity: 0,
+                interactive: false,
+            }
+        }
+        map.createPane('pane_Alcaldas_1');
+        map.getPane('pane_Alcaldas_1').style.zIndex = 401;
+        map.getPane('pane_Alcaldas_1').style['mix-blend-mode'] = 'normal';
+        var layer_Alcaldas_1 = new L.geoJson(json_Alcaldas_1, {
+            attribution: '',
+            interactive: false,
+            dataVar: 'json_Alcaldas_1',
+            layerName: 'layer_Alcaldas_1',
+            pane: 'pane_Alcaldas_1',
+            onEachFeature: pop_Alcaldas_1,
+            style: style_Alcaldas_1_0,
+        });
+        bounds_group.addLayer(layer_Alcaldas_1);
+        map.addLayer(layer_Alcaldas_1);
+        function pop_Zonificacin_2(feature, layer) {
+            var popupContent = '<table>\
+                </table>';
+            var content = removeEmptyRowsFromPopupContent(popupContent, feature);
+			layer.on('popupopen', function(e) {
+				addClassToPopupIfMedia(content, e.popup);
+			});
+			layer.bindPopup(content, { maxHeight: 400 });
+        }
+
+        function style_Zonificacin_2_0(feature) {
+            switch(String(feature.properties['INTENSIDAD'])) {
+                case 'Zona I':
+                    return {
+                pane: 'pane_Zonificacin_2',
+                opacity: 1,
+                color: 'rgba(255,213,1,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 2.0,
+                fillOpacity: 0,
+                interactive: false,
+            }
+                    break;
+                case 'Zona II':
+                    return {
+                pane: 'pane_Zonificacin_2',
+                opacity: 1,
+                color: 'rgba(255,115,1,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 2.0,
+                fillOpacity: 0,
+                interactive: false,
+            }
+                    break;
+                case 'Zona III':
+                    return {
+                pane: 'pane_Zonificacin_2',
+                opacity: 1,
+                color: 'rgba(255,1,5,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 2.0,
+                fillOpacity: 0,
+                interactive: false,
+            }
+                    break;
+            }
+        }
+        map.createPane('pane_Zonificacin_2');
+        map.getPane('pane_Zonificacin_2').style.zIndex = 402;
+        map.getPane('pane_Zonificacin_2').style['mix-blend-mode'] = 'normal';
+        var layer_Zonificacin_2 = new L.geoJson(json_Zonificacin_2, {
+            attribution: '',
+            interactive: false,
+            dataVar: 'json_Zonificacin_2',
+            layerName: 'layer_Zonificacin_2',
+            pane: 'pane_Zonificacin_2',
+            onEachFeature: pop_Zonificacin_2,
+            style: style_Zonificacin_2_0,
+        });
+        bounds_group.addLayer(layer_Zonificacin_2);
+        function pop_Xochimilco_3(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <th scope="row">PREDIOS</th>\
+                        <td class="visible-with-data" id="PREDIOS">' + (feature.properties['PREDIOS'] !== null ? autolinker.link(feature.properties['PREDIOS'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">ANEXOS</th>\
+                        <td class="visible-with-data" id="ANEXOS">' + (feature.properties['ANEXOS'] !== null ? autolinker.link(feature.properties['ANEXOS'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">DIRECCION</th>\
+                        <td class="visible-with-data" id="DIRECCION">' + (feature.properties['DIRECCION'] !== null ? autolinker.link(feature.properties['DIRECCION'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">ZONA</th>\
+                        <td class="visible-with-data" id="ZONA">' + (feature.properties['ZONA'] !== null ? autolinker.link(feature.properties['ZONA'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">ALCALDIA</th>\
+                        <td class="visible-with-data" id="ALCALDIA">' + (feature.properties['ALCALDIA'] !== null ? autolinker.link(feature.properties['ALCALDIA'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">COORDINADOR DE SUB COMITÉ DE PROTECCION CIVIL (CHALECO AMARILLO)</th>\
+                        <td class="visible-with-data" id="COORDINADOR DE SUB COMITÉ DE PROTECCION CIVIL (CHALECO AMARILLO)">' + (feature.properties['COORDINADOR DE SUB COMITÉ DE PROTECCION CIVIL (CHALECO AMARILLO)'] !== null ? autolinker.link(feature.properties['COORDINADOR DE SUB COMITÉ DE PROTECCION CIVIL (CHALECO AMARILLO)'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">BRIGADISTAS DE PRIMEROS AUXILIOS (CHALECO BLANCO)</th>\
+                        <td class="visible-with-data" id="BRIGADISTAS DE PRIMEROS AUXILIOS (CHALECO BLANCO)">' + (feature.properties['BRIGADISTAS DE PRIMEROS AUXILIOS (CHALECO BLANCO)'] !== null ? autolinker.link(feature.properties['BRIGADISTAS DE PRIMEROS AUXILIOS (CHALECO BLANCO)'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">BRIGADISTA DE PREVENCION Y COMBATE DE INCENDIOS (CHALECO ROJO)</th>\
+                        <td class="visible-with-data" id="BRIGADISTA DE PREVENCION Y COMBATE DE INCENDIOS (CHALECO ROJO)">' + (feature.properties['BRIGADISTA DE PREVENCION Y COMBATE DE INCENDIOS (CHALECO ROJO)'] !== null ? autolinker.link(feature.properties['BRIGADISTA DE PREVENCION Y COMBATE DE INCENDIOS (CHALECO ROJO)'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">BRIGADISTA DE EVACUACIÓN Y REPLIEGUE (CHALECO ANARANJADO)</th>\
+                        <td class="visible-with-data" id="BRIGADISTA DE EVACUACIÓN Y REPLIEGUE (CHALECO ANARANJADO)">' + (feature.properties['BRIGADISTA DE EVACUACIÓN Y REPLIEGUE (CHALECO ANARANJADO)'] !== null ? autolinker.link(feature.properties['BRIGADISTA DE EVACUACIÓN Y REPLIEGUE (CHALECO ANARANJADO)'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">BRIGADISTA DE COMUNICACIÓN (CHALECO VERDE)</th>\
+                        <td class="visible-with-data" id="BRIGADISTA DE COMUNICACIÓN (CHALECO VERDE)">' + (feature.properties['BRIGADISTA DE COMUNICACIÓN (CHALECO VERDE)'] !== null ? autolinker.link(feature.properties['BRIGADISTA DE COMUNICACIÓN (CHALECO VERDE)'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">BRIGADISTA DE APOYO PSICOSOCIAL (AZUL CLARO)</th>\
+                        <td class="visible-with-data" id="BRIGADISTA DE APOYO PSICOSOCIAL (AZUL CLARO)">' + (feature.properties['BRIGADISTA DE APOYO PSICOSOCIAL (AZUL CLARO)'] !== null ? autolinker.link(feature.properties['BRIGADISTA DE APOYO PSICOSOCIAL (AZUL CLARO)'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">BRIGADISTA MULTIFUNCIONAL CHALECO (NARANJA Y AZUL)</th>\
+                        <td class="visible-with-data" id="BRIGADISTA MULTIFUNCIONAL CHALECO (NARANJA Y AZUL)">' + (feature.properties['BRIGADISTA MULTIFUNCIONAL CHALECO (NARANJA Y AZUL)'] !== null ? autolinker.link(feature.properties['BRIGADISTA MULTIFUNCIONAL CHALECO (NARANJA Y AZUL)'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">TOTAL DE BRIGADISTAS</th>\
+                        <td class="visible-with-data" id="TOTAL DE BRIGADISTAS">' + (feature.properties['TOTAL DE BRIGADISTAS'] !== null ? autolinker.link(feature.properties['TOTAL DE BRIGADISTAS'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">NUMERO DE PERSONAS SERVIDORAS PUBLICAS APROXIMADAS QUE LABORAN EN EL INMUEBLE 2024</th>\
+                        <td class="visible-with-data" id="NUMERO DE PERSONAS SERVIDORAS PUBLICAS APROXIMADAS QUE LABORAN EN EL INMUEBLE 2024">' + (feature.properties['NUMERO DE PERSONAS SERVIDORAS PUBLICAS APROXIMADAS QUE LABORAN EN EL INMUEBLE 2024'] !== null ? autolinker.link(feature.properties['NUMERO DE PERSONAS SERVIDORAS PUBLICAS APROXIMADAS QUE LABORAN EN EL INMUEBLE 2024'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">BRIGADISTAS DEBER SER</th>\
+                        <td class="visible-with-data" id="BRIGADISTAS DEBER SER">' + (feature.properties['BRIGADISTAS DEBER SER'] !== null ? autolinker.link(feature.properties['BRIGADISTAS DEBER SER'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">PROGRAMA INTERNO Y PLAN DE EVACUACION</th>\
+                        <td class="visible-with-data" id="PROGRAMA INTERNO Y PLAN DE EVACUACION">' + (feature.properties['PROGRAMA INTERNO Y PLAN DE EVACUACION'] !== null ? autolinker.link(feature.properties['PROGRAMA INTERNO Y PLAN DE EVACUACION'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">METROS DE CONSTRUCCION (m2)</th>\
+                        <td class="visible-with-data" id="METROS DE CONSTRUCCION (m2)">' + (feature.properties['METROS DE CONSTRUCCION (m2)'] !== null ? autolinker.link(feature.properties['METROS DE CONSTRUCCION (m2)'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">DIAMETRO DE ESTUDIO</th>\
+                        <td class="visible-with-data" id="DIAMETRO DE ESTUDIO">' + (feature.properties['DIAMETRO DE ESTUDIO'] !== null ? autolinker.link(feature.properties['DIAMETRO DE ESTUDIO'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">ZONAS DE ACUERDO CON EL REGLAMENTO DE CONSTRUCCIONES PARA EL DISTRITO FEDERAL</th>\
+                        <td class="visible-with-data" id="ZONAS DE ACUERDO CON EL REGLAMENTO DE CONSTRUCCIONES PARA EL DISTRITO FEDERAL">' + (feature.properties['ZONAS DE ACUERDO CON EL REGLAMENTO DE CONSTRUCCIONES PARA EL DISTRITO FEDERAL'] !== null ? autolinker.link(feature.properties['ZONAS DE ACUERDO CON EL REGLAMENTO DE CONSTRUCCIONES PARA EL DISTRITO FEDERAL'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">GRADO DE RIESGO DE INCENDIO NOM-002-STPS-2010</th>\
+                        <td class="visible-with-data" id="GRADO DE RIESGO DE INCENDIO NOM-002-STPS-2010">' + (feature.properties['GRADO DE RIESGO DE INCENDIO NOM-002-STPS-2010'] !== null ? autolinker.link(feature.properties['GRADO DE RIESGO DE INCENDIO NOM-002-STPS-2010'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">LATITUD</th>\
+                        <td class="visible-with-data" id="LATITUD">' + (feature.properties['LATITUD'] !== null ? autolinker.link(feature.properties['LATITUD'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">LONGITUD</th>\
+                        <td class="visible-with-data" id="LONGITUD">' + (feature.properties['LONGITUD'] !== null ? autolinker.link(feature.properties['LONGITUD'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            var content = removeEmptyRowsFromPopupContent(popupContent, feature);
+			layer.on('popupopen', function(e) {
+				addClassToPopupIfMedia(content, e.popup);
+			});
+			layer.bindPopup(content, { maxHeight: 400 });
+        }
+
+        function style_Xochimilco_3_0() {
+            return {
+                pane: 'pane_Xochimilco_3',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(229,182,54,1.0)',
+                interactive: true,
+            }
+        }
+        map.createPane('pane_Xochimilco_3');
+        map.getPane('pane_Xochimilco_3').style.zIndex = 403;
+        map.getPane('pane_Xochimilco_3').style['mix-blend-mode'] = 'normal';
+        var layer_Xochimilco_3 = new L.geoJson(json_Xochimilco_3, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_Xochimilco_3',
+            layerName: 'layer_Xochimilco_3',
+            pane: 'pane_Xochimilco_3',
+            onEachFeature: pop_Xochimilco_3,
+            pointToLayer: function (feature, latlng) {
+                var context = {
+                    feature: feature,
+                    variables: {}
+                };
+                return L.circleMarker(latlng, style_Xochimilco_3_0(feature));
+            },
+        });
+        bounds_group.addLayer(layer_Xochimilco_3);
+        function pop_VenustianoCarranza_4(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <th scope="row">PREDIOS</th>\
+                        <td class="visible-with-data" id="PREDIOS">' + (feature.properties['PREDIOS'] !== null ? autolinker.link(feature.properties['PREDIOS'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">ANEXOS</th>\
+                        <td class="visible-with-data" id="ANEXOS">' + (feature.properties['ANEXOS'] !== null ? autolinker.link(feature.properties['ANEXOS'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">DIRECCION</th>\
+                        <td class="visible-with-data" id="DIRECCION">' + (feature.properties['DIRECCION'] !== null ? autolinker.link(feature.properties['DIRECCION'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">ZONA</th>\
+                        <td class="visible-with-data" id="ZONA">' + (feature.properties['ZONA'] !== null ? autolinker.link(feature.properties['ZONA'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">ALCALDIA</th>\
+                        <td class="visible-with-data" id="ALCALDIA">' + (feature.properties['ALCALDIA'] !== null ? autolinker.link(feature.properties['ALCALDIA'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">COORDINADOR DE SUB COMITÉ DE PROTECCION CIVIL (CHALECO AMARILLO)</th>\
+                        <td class="visible-with-data" id="COORDINADOR DE SUB COMITÉ DE PROTECCION CIVIL (CHALECO AMARILLO)">' + (feature.properties['COORDINADOR DE SUB COMITÉ DE PROTECCION CIVIL (CHALECO AMARILLO)'] !== null ? autolinker.link(feature.properties['COORDINADOR DE SUB COMITÉ DE PROTECCION CIVIL (CHALECO AMARILLO)'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">BRIGADISTAS DE PRIMEROS AUXILIOS (CHALECO BLANCO)</th>\
+                        <td class="visible-with-data" id="BRIGADISTAS DE PRIMEROS AUXILIOS (CHALECO BLANCO)">' + (feature.properties['BRIGADISTAS DE PRIMEROS AUXILIOS (CHALECO BLANCO)'] !== null ? autolinker.link(feature.properties['BRIGADISTAS DE PRIMEROS AUXILIOS (CHALECO BLANCO)'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">BRIGADISTA DE PREVENCION Y COMBATE DE INCENDIOS (CHALECO ROJO)</th>\
+                        <td class="visible-with-data" id="BRIGADISTA DE PREVENCION Y COMBATE DE INCENDIOS (CHALECO ROJO)">' + (feature.properties['BRIGADISTA DE PREVENCION Y COMBATE DE INCENDIOS (CHALECO ROJO)'] !== null ? autolinker.link(feature.properties['BRIGADISTA DE PREVENCION Y COMBATE DE INCENDIOS (CHALECO ROJO)'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">BRIGADISTA DE EVACUACIÓN Y REPLIEGUE (CHALECO ANARANJADO)</th>\
+                        <td class="visible-with-data" id="BRIGADISTA DE EVACUACIÓN Y REPLIEGUE (CHALECO ANARANJADO)">' + (feature.properties['BRIGADISTA DE EVACUACIÓN Y REPLIEGUE (CHALECO ANARANJADO)'] !== null ? autolinker.link(feature.properties['BRIGADISTA DE EVACUACIÓN Y REPLIEGUE (CHALECO ANARANJADO)'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">BRIGADISTA DE COMUNICACIÓN (CHALECO VERDE)</th>\
+                        <td class="visible-with-data" id="BRIGADISTA DE COMUNICACIÓN (CHALECO VERDE)">' + (feature.properties['BRIGADISTA DE COMUNICACIÓN (CHALECO VERDE)'] !== null ? autolinker.link(feature.properties['BRIGADISTA DE COMUNICACIÓN (CHALECO VERDE)'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">BRIGADISTA DE APOYO PSICOSOCIAL (AZUL CLARO)</th>\
+                        <td class="visible-with-data" id="BRIGADISTA DE APOYO PSICOSOCIAL (AZUL CLARO)">' + (feature.properties['BRIGADISTA DE APOYO PSICOSOCIAL (AZUL CLARO)'] !== null ? autolinker.link(feature.properties['BRIGADISTA DE APOYO PSICOSOCIAL (AZUL CLARO)'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">BRIGADISTA MULTIFUNCIONAL CHALECO (NARANJA Y AZUL)</th>\
+                        <td class="visible-with-data" id="BRIGADISTA MULTIFUNCIONAL CHALECO (NARANJA Y AZUL)">' + (feature.properties['BRIGADISTA MULTIFUNCIONAL CHALECO (NARANJA Y AZUL)'] !== null ? autolinker.link(feature.properties['BRIGADISTA MULTIFUNCIONAL CHALECO (NARANJA Y AZUL)'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">TOTAL DE BRIGADISTAS</th>\
+                        <td class="visible-with-data" id="TOTAL DE BRIGADISTAS">' + (feature.properties['TOTAL DE BRIGADISTAS'] !== null ? autolinker.link(feature.properties['TOTAL DE BRIGADISTAS'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">NUMERO DE PERSONAS SERVIDORAS PUBLICAS APROXIMADAS QUE LABORAN EN EL INMUEBLE 2024</th>\
+                        <td class="visible-with-data" id="NUMERO DE PERSONAS SERVIDORAS PUBLICAS APROXIMADAS QUE LABORAN EN EL INMUEBLE 2024">' + (feature.properties['NUMERO DE PERSONAS SERVIDORAS PUBLICAS APROXIMADAS QUE LABORAN EN EL INMUEBLE 2024'] !== null ? autolinker.link(feature.properties['NUMERO DE PERSONAS SERVIDORAS PUBLICAS APROXIMADAS QUE LABORAN EN EL INMUEBLE 2024'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">BRIGADISTAS DEBER SER</th>\
+                        <td class="visible-with-data" id="BRIGADISTAS DEBER SER">' + (feature.properties['BRIGADISTAS DEBER SER'] !== null ? autolinker.link(feature.properties['BRIGADISTAS DEBER SER'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">PROGRAMA INTERNO Y PLAN DE EVACUACION</th>\
+                        <td class="visible-with-data" id="PROGRAMA INTERNO Y PLAN DE EVACUACION">' + (feature.properties['PROGRAMA INTERNO Y PLAN DE EVACUACION'] !== null ? autolinker.link(feature.properties['PROGRAMA INTERNO Y PLAN DE EVACUACION'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">METROS DE CONSTRUCCION (m2)</th>\
+                        <td class="visible-with-data" id="METROS DE CONSTRUCCION (m2)">' + (feature.properties['METROS DE CONSTRUCCION (m2)'] !== null ? autolinker.link(feature.properties['METROS DE CONSTRUCCION (m2)'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">DIAMETRO DE ESTUDIO</th>\
+                        <td class="visible-with-data" id="DIAMETRO DE ESTUDIO">' + (feature.properties['DIAMETRO DE ESTUDIO'] !== null ? autolinker.link(feature.properties['DIAMETRO DE ESTUDIO'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">ZONAS DE ACUERDO CON EL REGLAMENTO DE CONSTRUCCIONES PARA EL DISTRITO FEDERAL</th>\
+                        <td class="visible-with-data" id="ZONAS DE ACUERDO CON EL REGLAMENTO DE CONSTRUCCIONES PARA EL DISTRITO FEDERAL">' + (feature.properties['ZONAS DE ACUERDO CON EL REGLAMENTO DE CONSTRUCCIONES PARA EL DISTRITO FEDERAL'] !== null ? autolinker.link(feature.properties['ZONAS DE ACUERDO CON EL REGLAMENTO DE CONSTRUCCIONES PARA EL DISTRITO FEDERAL'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">GRADO DE RIESGO DE INCENDIO NOM-002-STPS-2010</th>\
+                        <td class="visible-with-data" id="GRADO DE RIESGO DE INCENDIO NOM-002-STPS-2010">' + (feature.properties['GRADO DE RIESGO DE INCENDIO NOM-002-STPS-2010'] !== null ? autolinker.link(feature.properties['GRADO DE RIESGO DE INCENDIO NOM-002-STPS-2010'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">LATITUD</th>\
+                        <td class="visible-with-data" id="LATITUD">' + (feature.properties['LATITUD'] !== null ? autolinker.link(feature.properties['LATITUD'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">LONGITUD</th>\
+                        <td class="visible-with-data" id="LONGITUD">' + (feature.properties['LONGITUD'] !== null ? autolinker.link(feature.properties['LONGITUD'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            var content = removeEmptyRowsFromPopupContent(popupContent, feature);
+			layer.on('popupopen', function(e) {
+				addClassToPopupIfMedia(content, e.popup);
+			});
+			layer.bindPopup(content, { maxHeight: 400 });
+        }
+
+        function style_VenustianoCarranza_4_0() {
+            return {
+                pane: 'pane_VenustianoCarranza_4',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(198,127,224,1.0)',
+                interactive: true,
+            }
+        }
+        map.createPane('pane_VenustianoCarranza_4');
+        map.getPane('pane_VenustianoCarranza_4').style.zIndex = 404;
+        map.getPane('pane_VenustianoCarranza_4').style['mix-blend-mode'] = 'normal';
+        var layer_VenustianoCarranza_4 = new L.geoJson(json_VenustianoCarranza_4, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_VenustianoCarranza_4',
+            layerName: 'layer_VenustianoCarranza_4',
+            pane: 'pane_VenustianoCarranza_4',
+            onEachFeature: pop_VenustianoCarranza_4,
+            pointToLayer: function (feature, latlng) {
+                var context = {
+                    feature: feature,
+                    variables: {}
+                };
+                return L.circleMarker(latlng, style_VenustianoCarranza_4_0(feature));
+            },
+        });
+        bounds_group.addLayer(layer_VenustianoCarranza_4);
+        function pop_Tlhuac_5(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <th scope="row">PREDIOS</th>\
+                        <td class="visible-with-data" id="PREDIOS">' + (feature.properties['PREDIOS'] !== null ? autolinker.link(feature.properties['PREDIOS'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">ANEXOS</th>\
+                        <td class="visible-with-data" id="ANEXOS">' + (feature.properties['ANEXOS'] !== null ? autolinker.link(feature.properties['ANEXOS'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">DIRECCION</th>\
+                        <td class="visible-with-data" id="DIRECCION">' + (feature.properties['DIRECCION'] !== null ? autolinker.link(feature.properties['DIRECCION'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">ZONA</th>\
+                        <td class="visible-with-data" id="ZONA">' + (feature.properties['ZONA'] !== null ? autolinker.link(feature.properties['ZONA'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">ALCALDIA</th>\
+                        <td class="visible-with-data" id="ALCALDIA">' + (feature.properties['ALCALDIA'] !== null ? autolinker.link(feature.properties['ALCALDIA'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">COORDINADOR DE SUB COMITÉ DE PROTECCION CIVIL (CHALECO AMARILLO)</th>\
+                        <td class="visible-with-data" id="COORDINADOR DE SUB COMITÉ DE PROTECCION CIVIL (CHALECO AMARILLO)">' + (feature.properties['COORDINADOR DE SUB COMITÉ DE PROTECCION CIVIL (CHALECO AMARILLO)'] !== null ? autolinker.link(feature.properties['COORDINADOR DE SUB COMITÉ DE PROTECCION CIVIL (CHALECO AMARILLO)'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">BRIGADISTAS DE PRIMEROS AUXILIOS (CHALECO BLANCO)</th>\
+                        <td class="visible-with-data" id="BRIGADISTAS DE PRIMEROS AUXILIOS (CHALECO BLANCO)">' + (feature.properties['BRIGADISTAS DE PRIMEROS AUXILIOS (CHALECO BLANCO)'] !== null ? autolinker.link(feature.properties['BRIGADISTAS DE PRIMEROS AUXILIOS (CHALECO BLANCO)'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">BRIGADISTA DE PREVENCION Y COMBATE DE INCENDIOS (CHALECO ROJO)</th>\
+                        <td class="visible-with-data" id="BRIGADISTA DE PREVENCION Y COMBATE DE INCENDIOS (CHALECO ROJO)">' + (feature.properties['BRIGADISTA DE PREVENCION Y COMBATE DE INCENDIOS (CHALECO ROJO)'] !== null ? autolinker.link(feature.properties['BRIGADISTA DE PREVENCION Y COMBATE DE INCENDIOS (CHALECO ROJO)'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">BRIGADISTA DE EVACUACIÓN Y REPLIEGUE (CHALECO ANARANJADO)</th>\
+                        <td class="visible-with-data" id="BRIGADISTA DE EVACUACIÓN Y REPLIEGUE (CHALECO ANARANJADO)">' + (feature.properties['BRIGADISTA DE EVACUACIÓN Y REPLIEGUE (CHALECO ANARANJADO)'] !== null ? autolinker.link(feature.properties['BRIGADISTA DE EVACUACIÓN Y REPLIEGUE (CHALECO ANARANJADO)'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">BRIGADISTA DE COMUNICACIÓN (CHALECO VERDE)</th>\
+                        <td class="visible-with-data" id="BRIGADISTA DE COMUNICACIÓN (CHALECO VERDE)">' + (feature.properties['BRIGADISTA DE COMUNICACIÓN (CHALECO VERDE)'] !== null ? autolinker.link(feature.properties['BRIGADISTA DE COMUNICACIÓN (CHALECO VERDE)'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">BRIGADISTA DE APOYO PSICOSOCIAL (AZUL CLARO)</th>\
+                        <td class="visible-with-data" id="BRIGADISTA DE APOYO PSICOSOCIAL (AZUL CLARO)">' + (feature.properties['BRIGADISTA DE APOYO PSICOSOCIAL (AZUL CLARO)'] !== null ? autolinker.link(feature.properties['BRIGADISTA DE APOYO PSICOSOCIAL (AZUL CLARO)'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">BRIGADISTA MULTIFUNCIONAL CHALECO (NARANJA Y AZUL)</th>\
+                        <td class="visible-with-data" id="BRIGADISTA MULTIFUNCIONAL CHALECO (NARANJA Y AZUL)">' + (feature.properties['BRIGADISTA MULTIFUNCIONAL CHALECO (NARANJA Y AZUL)'] !== null ? autolinker.link(feature.properties['BRIGADISTA MULTIFUNCIONAL CHALECO (NARANJA Y AZUL)'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">TOTAL DE BRIGADISTAS</th>\
+                        <td class="visible-with-data" id="TOTAL DE BRIGADISTAS">' + (feature.properties['TOTAL DE BRIGADISTAS'] !== null ? autolinker.link(feature.properties['TOTAL DE BRIGADISTAS'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">NUMERO DE PERSONAS SERVIDORAS PUBLICAS APROXIMADAS QUE LABORAN EN EL INMUEBLE 2024</th>\
+                        <td class="visible-with-data" id="NUMERO DE PERSONAS SERVIDORAS PUBLICAS APROXIMADAS QUE LABORAN EN EL INMUEBLE 2024">' + (feature.properties['NUMERO DE PERSONAS SERVIDORAS PUBLICAS APROXIMADAS QUE LABORAN EN EL INMUEBLE 2024'] !== null ? autolinker.link(feature.properties['NUMERO DE PERSONAS SERVIDORAS PUBLICAS APROXIMADAS QUE LABORAN EN EL INMUEBLE 2024'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">BRIGADISTAS DEBER SER</th>\
+                        <td class="visible-with-data" id="BRIGADISTAS DEBER SER">' + (feature.properties['BRIGADISTAS DEBER SER'] !== null ? autolinker.link(feature.properties['BRIGADISTAS DEBER SER'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">PROGRAMA INTERNO Y PLAN DE EVACUACION</th>\
+                        <td class="visible-with-data" id="PROGRAMA INTERNO Y PLAN DE EVACUACION">' + (feature.properties['PROGRAMA INTERNO Y PLAN DE EVACUACION'] !== null ? autolinker.link(feature.properties['PROGRAMA INTERNO Y PLAN DE EVACUACION'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">METROS DE CONSTRUCCION (m2)</th>\
+                        <td class="visible-with-data" id="METROS DE CONSTRUCCION (m2)">' + (feature.properties['METROS DE CONSTRUCCION (m2)'] !== null ? autolinker.link(feature.properties['METROS DE CONSTRUCCION (m2)'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">DIAMETRO DE ESTUDIO</th>\
+                        <td class="visible-with-data" id="DIAMETRO DE ESTUDIO">' + (feature.properties['DIAMETRO DE ESTUDIO'] !== null ? autolinker.link(feature.properties['DIAMETRO DE ESTUDIO'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">ZONAS DE ACUERDO CON EL REGLAMENTO DE CONSTRUCCIONES PARA EL DISTRITO FEDERAL</th>\
+                        <td class="visible-with-data" id="ZONAS DE ACUERDO CON EL REGLAMENTO DE CONSTRUCCIONES PARA EL DISTRITO FEDERAL">' + (feature.properties['ZONAS DE ACUERDO CON EL REGLAMENTO DE CONSTRUCCIONES PARA EL DISTRITO FEDERAL'] !== null ? autolinker.link(feature.properties['ZONAS DE ACUERDO CON EL REGLAMENTO DE CONSTRUCCIONES PARA EL DISTRITO FEDERAL'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">GRADO DE RIESGO DE INCENDIO NOM-002-STPS-2010</th>\
+                        <td class="visible-with-data" id="GRADO DE RIESGO DE INCENDIO NOM-002-STPS-2010">' + (feature.properties['GRADO DE RIESGO DE INCENDIO NOM-002-STPS-2010'] !== null ? autolinker.link(feature.properties['GRADO DE RIESGO DE INCENDIO NOM-002-STPS-2010'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">LATITUD</th>\
+                        <td class="visible-with-data" id="LATITUD">' + (feature.properties['LATITUD'] !== null ? autolinker.link(feature.properties['LATITUD'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">LONGITUD</th>\
+                        <td class="visible-with-data" id="LONGITUD">' + (feature.properties['LONGITUD'] !== null ? autolinker.link(feature.properties['LONGITUD'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            var content = removeEmptyRowsFromPopupContent(popupContent, feature);
+			layer.on('popupopen', function(e) {
+				addClassToPopupIfMedia(content, e.popup);
+			});
+			layer.bindPopup(content, { maxHeight: 400 });
+        }
+
+        function style_Tlhuac_5_0() {
+            return {
+                pane: 'pane_Tlhuac_5',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(235,80,114,1.0)',
+                interactive: true,
+            }
+        }
+        map.createPane('pane_Tlhuac_5');
+        map.getPane('pane_Tlhuac_5').style.zIndex = 405;
+        map.getPane('pane_Tlhuac_5').style['mix-blend-mode'] = 'normal';
+        var layer_Tlhuac_5 = new L.geoJson(json_Tlhuac_5, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_Tlhuac_5',
+            layerName: 'layer_Tlhuac_5',
+            pane: 'pane_Tlhuac_5',
+            onEachFeature: pop_Tlhuac_5,
+            pointToLayer: function (feature, latlng) {
+                var context = {
+                    feature: feature,
+                    variables: {}
+                };
+                return L.circleMarker(latlng, style_Tlhuac_5_0(feature));
+            },
+        });
+        bounds_group.addLayer(layer_Tlhuac_5);
+        function pop_Tlalpan_6(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <th scope="row">PREDIOS</th>\
+                        <td class="visible-with-data" id="PREDIOS">' + (feature.properties['PREDIOS'] !== null ? autolinker.link(feature.properties['PREDIOS'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">ANEXOS</th>\
+                        <td class="visible-with-data" id="ANEXOS">' + (feature.properties['ANEXOS'] !== null ? autolinker.link(feature.properties['ANEXOS'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">DIRECCION</th>\
+                        <td class="visible-with-data" id="DIRECCION">' + (feature.properties['DIRECCION'] !== null ? autolinker.link(feature.properties['DIRECCION'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">ZONA</th>\
+                        <td class="visible-with-data" id="ZONA">' + (feature.properties['ZONA'] !== null ? autolinker.link(feature.properties['ZONA'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">ALCALDIA</th>\
+                        <td class="visible-with-data" id="ALCALDIA">' + (feature.properties['ALCALDIA'] !== null ? autolinker.link(feature.properties['ALCALDIA'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">COORDINADOR DE SUB COMITÉ DE PROTECCION CIVIL (CHALECO AMARILLO)</th>\
+                        <td class="visible-with-data" id="COORDINADOR DE SUB COMITÉ DE PROTECCION CIVIL (CHALECO AMARILLO)">' + (feature.properties['COORDINADOR DE SUB COMITÉ DE PROTECCION CIVIL (CHALECO AMARILLO)'] !== null ? autolinker.link(feature.properties['COORDINADOR DE SUB COMITÉ DE PROTECCION CIVIL (CHALECO AMARILLO)'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">BRIGADISTAS DE PRIMEROS AUXILIOS (CHALECO BLANCO)</th>\
+                        <td class="visible-with-data" id="BRIGADISTAS DE PRIMEROS AUXILIOS (CHALECO BLANCO)">' + (feature.properties['BRIGADISTAS DE PRIMEROS AUXILIOS (CHALECO BLANCO)'] !== null ? autolinker.link(feature.properties['BRIGADISTAS DE PRIMEROS AUXILIOS (CHALECO BLANCO)'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">BRIGADISTA DE PREVENCION Y COMBATE DE INCENDIOS (CHALECO ROJO)</th>\
+                        <td class="visible-with-data" id="BRIGADISTA DE PREVENCION Y COMBATE DE INCENDIOS (CHALECO ROJO)">' + (feature.properties['BRIGADISTA DE PREVENCION Y COMBATE DE INCENDIOS (CHALECO ROJO)'] !== null ? autolinker.link(feature.properties['BRIGADISTA DE PREVENCION Y COMBATE DE INCENDIOS (CHALECO ROJO)'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">BRIGADISTA DE EVACUACIÓN Y REPLIEGUE (CHALECO ANARANJADO)</th>\
+                        <td class="visible-with-data" id="BRIGADISTA DE EVACUACIÓN Y REPLIEGUE (CHALECO ANARANJADO)">' + (feature.properties['BRIGADISTA DE EVACUACIÓN Y REPLIEGUE (CHALECO ANARANJADO)'] !== null ? autolinker.link(feature.properties['BRIGADISTA DE EVACUACIÓN Y REPLIEGUE (CHALECO ANARANJADO)'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">BRIGADISTA DE COMUNICACIÓN (CHALECO VERDE)</th>\
+                        <td class="visible-with-data" id="BRIGADISTA DE COMUNICACIÓN (CHALECO VERDE)">' + (feature.properties['BRIGADISTA DE COMUNICACIÓN (CHALECO VERDE)'] !== null ? autolinker.link(feature.properties['BRIGADISTA DE COMUNICACIÓN (CHALECO VERDE)'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">BRIGADISTA DE APOYO PSICOSOCIAL (AZUL CLARO)</th>\
+                        <td class="visible-with-data" id="BRIGADISTA DE APOYO PSICOSOCIAL (AZUL CLARO)">' + (feature.properties['BRIGADISTA DE APOYO PSICOSOCIAL (AZUL CLARO)'] !== null ? autolinker.link(feature.properties['BRIGADISTA DE APOYO PSICOSOCIAL (AZUL CLARO)'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">BRIGADISTA MULTIFUNCIONAL CHALECO (NARANJA Y AZUL)</th>\
+                        <td class="visible-with-data" id="BRIGADISTA MULTIFUNCIONAL CHALECO (NARANJA Y AZUL)">' + (feature.properties['BRIGADISTA MULTIFUNCIONAL CHALECO (NARANJA Y AZUL)'] !== null ? autolinker.link(feature.properties['BRIGADISTA MULTIFUNCIONAL CHALECO (NARANJA Y AZUL)'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">TOTAL DE BRIGADISTAS</th>\
+                        <td class="visible-with-data" id="TOTAL DE BRIGADISTAS">' + (feature.properties['TOTAL DE BRIGADISTAS'] !== null ? autolinker.link(feature.properties['TOTAL DE BRIGADISTAS'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">NUMERO DE PERSONAS SERVIDORAS PUBLICAS APROXIMADAS QUE LABORAN EN EL INMUEBLE 2024</th>\
+                        <td class="visible-with-data" id="NUMERO DE PERSONAS SERVIDORAS PUBLICAS APROXIMADAS QUE LABORAN EN EL INMUEBLE 2024">' + (feature.properties['NUMERO DE PERSONAS SERVIDORAS PUBLICAS APROXIMADAS QUE LABORAN EN EL INMUEBLE 2024'] !== null ? autolinker.link(feature.properties['NUMERO DE PERSONAS SERVIDORAS PUBLICAS APROXIMADAS QUE LABORAN EN EL INMUEBLE 2024'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">BRIGADISTAS DEBER SER</th>\
+                        <td class="visible-with-data" id="BRIGADISTAS DEBER SER">' + (feature.properties['BRIGADISTAS DEBER SER'] !== null ? autolinker.link(feature.properties['BRIGADISTAS DEBER SER'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">PROGRAMA INTERNO Y PLAN DE EVACUACION</th>\
+                        <td class="visible-with-data" id="PROGRAMA INTERNO Y PLAN DE EVACUACION">' + (feature.properties['PROGRAMA INTERNO Y PLAN DE EVACUACION'] !== null ? autolinker.link(feature.properties['PROGRAMA INTERNO Y PLAN DE EVACUACION'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">METROS DE CONSTRUCCION (m2)</th>\
+                        <td class="visible-with-data" id="METROS DE CONSTRUCCION (m2)">' + (feature.properties['METROS DE CONSTRUCCION (m2)'] !== null ? autolinker.link(feature.properties['METROS DE CONSTRUCCION (m2)'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">DIAMETRO DE ESTUDIO</th>\
+                        <td class="visible-with-data" id="DIAMETRO DE ESTUDIO">' + (feature.properties['DIAMETRO DE ESTUDIO'] !== null ? autolinker.link(feature.properties['DIAMETRO DE ESTUDIO'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">ZONAS DE ACUERDO CON EL REGLAMENTO DE CONSTRUCCIONES PARA EL DISTRITO FEDERAL</th>\
+                        <td class="visible-with-data" id="ZONAS DE ACUERDO CON EL REGLAMENTO DE CONSTRUCCIONES PARA EL DISTRITO FEDERAL">' + (feature.properties['ZONAS DE ACUERDO CON EL REGLAMENTO DE CONSTRUCCIONES PARA EL DISTRITO FEDERAL'] !== null ? autolinker.link(feature.properties['ZONAS DE ACUERDO CON EL REGLAMENTO DE CONSTRUCCIONES PARA EL DISTRITO FEDERAL'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">GRADO DE RIESGO DE INCENDIO NOM-002-STPS-2010</th>\
+                        <td class="visible-with-data" id="GRADO DE RIESGO DE INCENDIO NOM-002-STPS-2010">' + (feature.properties['GRADO DE RIESGO DE INCENDIO NOM-002-STPS-2010'] !== null ? autolinker.link(feature.properties['GRADO DE RIESGO DE INCENDIO NOM-002-STPS-2010'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">LATITUD</th>\
+                        <td class="visible-with-data" id="LATITUD">' + (feature.properties['LATITUD'] !== null ? autolinker.link(feature.properties['LATITUD'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">LONGITUD</th>\
+                        <td class="visible-with-data" id="LONGITUD">' + (feature.properties['LONGITUD'] !== null ? autolinker.link(feature.properties['LONGITUD'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            var content = removeEmptyRowsFromPopupContent(popupContent, feature);
+			layer.on('popupopen', function(e) {
+				addClassToPopupIfMedia(content, e.popup);
+			});
+			layer.bindPopup(content, { maxHeight: 400 });
+        }
+
+        function style_Tlalpan_6_0() {
+            return {
+                pane: 'pane_Tlalpan_6',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(141,90,153,1.0)',
+                interactive: true,
+            }
+        }
+        map.createPane('pane_Tlalpan_6');
+        map.getPane('pane_Tlalpan_6').style.zIndex = 406;
+        map.getPane('pane_Tlalpan_6').style['mix-blend-mode'] = 'normal';
+        var layer_Tlalpan_6 = new L.geoJson(json_Tlalpan_6, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_Tlalpan_6',
+            layerName: 'layer_Tlalpan_6',
+            pane: 'pane_Tlalpan_6',
+            onEachFeature: pop_Tlalpan_6,
+            pointToLayer: function (feature, latlng) {
+                var context = {
+                    feature: feature,
+                    variables: {}
+                };
+                return L.circleMarker(latlng, style_Tlalpan_6_0(feature));
+            },
+        });
+        bounds_group.addLayer(layer_Tlalpan_6);
+        function pop_MilpaAlta_7(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <th scope="row">PREDIOS</th>\
+                        <td class="visible-with-data" id="PREDIOS">' + (feature.properties['PREDIOS'] !== null ? autolinker.link(feature.properties['PREDIOS'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">ANEXOS</th>\
+                        <td class="visible-with-data" id="ANEXOS">' + (feature.properties['ANEXOS'] !== null ? autolinker.link(feature.properties['ANEXOS'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">DIRECCION</th>\
+                        <td class="visible-with-data" id="DIRECCION">' + (feature.properties['DIRECCION'] !== null ? autolinker.link(feature.properties['DIRECCION'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">ZONA</th>\
+                        <td class="visible-with-data" id="ZONA">' + (feature.properties['ZONA'] !== null ? autolinker.link(feature.properties['ZONA'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">ALCALDIA</th>\
+                        <td class="visible-with-data" id="ALCALDIA">' + (feature.properties['ALCALDIA'] !== null ? autolinker.link(feature.properties['ALCALDIA'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">COORDINADOR DE SUB COMITÉ DE PROTECCION CIVIL (CHALECO AMARILLO)</th>\
+                        <td class="visible-with-data" id="COORDINADOR DE SUB COMITÉ DE PROTECCION CIVIL (CHALECO AMARILLO)">' + (feature.properties['COORDINADOR DE SUB COMITÉ DE PROTECCION CIVIL (CHALECO AMARILLO)'] !== null ? autolinker.link(feature.properties['COORDINADOR DE SUB COMITÉ DE PROTECCION CIVIL (CHALECO AMARILLO)'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">BRIGADISTAS DE PRIMEROS AUXILIOS (CHALECO BLANCO)</th>\
+                        <td class="visible-with-data" id="BRIGADISTAS DE PRIMEROS AUXILIOS (CHALECO BLANCO)">' + (feature.properties['BRIGADISTAS DE PRIMEROS AUXILIOS (CHALECO BLANCO)'] !== null ? autolinker.link(feature.properties['BRIGADISTAS DE PRIMEROS AUXILIOS (CHALECO BLANCO)'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">BRIGADISTA DE PREVENCION Y COMBATE DE INCENDIOS (CHALECO ROJO)</th>\
+                        <td class="visible-with-data" id="BRIGADISTA DE PREVENCION Y COMBATE DE INCENDIOS (CHALECO ROJO)">' + (feature.properties['BRIGADISTA DE PREVENCION Y COMBATE DE INCENDIOS (CHALECO ROJO)'] !== null ? autolinker.link(feature.properties['BRIGADISTA DE PREVENCION Y COMBATE DE INCENDIOS (CHALECO ROJO)'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">BRIGADISTA DE EVACUACIÓN Y REPLIEGUE (CHALECO ANARANJADO)</th>\
+                        <td class="visible-with-data" id="BRIGADISTA DE EVACUACIÓN Y REPLIEGUE (CHALECO ANARANJADO)">' + (feature.properties['BRIGADISTA DE EVACUACIÓN Y REPLIEGUE (CHALECO ANARANJADO)'] !== null ? autolinker.link(feature.properties['BRIGADISTA DE EVACUACIÓN Y REPLIEGUE (CHALECO ANARANJADO)'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">BRIGADISTA DE COMUNICACIÓN (CHALECO VERDE)</th>\
+                        <td class="visible-with-data" id="BRIGADISTA DE COMUNICACIÓN (CHALECO VERDE)">' + (feature.properties['BRIGADISTA DE COMUNICACIÓN (CHALECO VERDE)'] !== null ? autolinker.link(feature.properties['BRIGADISTA DE COMUNICACIÓN (CHALECO VERDE)'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">BRIGADISTA DE APOYO PSICOSOCIAL (AZUL CLARO)</th>\
+                        <td class="visible-with-data" id="BRIGADISTA DE APOYO PSICOSOCIAL (AZUL CLARO)">' + (feature.properties['BRIGADISTA DE APOYO PSICOSOCIAL (AZUL CLARO)'] !== null ? autolinker.link(feature.properties['BRIGADISTA DE APOYO PSICOSOCIAL (AZUL CLARO)'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">BRIGADISTA MULTIFUNCIONAL CHALECO (NARANJA Y AZUL)</th>\
+                        <td class="visible-with-data" id="BRIGADISTA MULTIFUNCIONAL CHALECO (NARANJA Y AZUL)">' + (feature.properties['BRIGADISTA MULTIFUNCIONAL CHALECO (NARANJA Y AZUL)'] !== null ? autolinker.link(feature.properties['BRIGADISTA MULTIFUNCIONAL CHALECO (NARANJA Y AZUL)'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">TOTAL DE BRIGADISTAS</th>\
+                        <td class="visible-with-data" id="TOTAL DE BRIGADISTAS">' + (feature.properties['TOTAL DE BRIGADISTAS'] !== null ? autolinker.link(feature.properties['TOTAL DE BRIGADISTAS'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">NUMERO DE PERSONAS SERVIDORAS PUBLICAS APROXIMADAS QUE LABORAN EN EL INMUEBLE 2024</th>\
+                        <td class="visible-with-data" id="NUMERO DE PERSONAS SERVIDORAS PUBLICAS APROXIMADAS QUE LABORAN EN EL INMUEBLE 2024">' + (feature.properties['NUMERO DE PERSONAS SERVIDORAS PUBLICAS APROXIMADAS QUE LABORAN EN EL INMUEBLE 2024'] !== null ? autolinker.link(feature.properties['NUMERO DE PERSONAS SERVIDORAS PUBLICAS APROXIMADAS QUE LABORAN EN EL INMUEBLE 2024'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">BRIGADISTAS DEBER SER</th>\
+                        <td class="visible-with-data" id="BRIGADISTAS DEBER SER">' + (feature.properties['BRIGADISTAS DEBER SER'] !== null ? autolinker.link(feature.properties['BRIGADISTAS DEBER SER'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">PROGRAMA INTERNO Y PLAN DE EVACUACION</th>\
+                        <td class="visible-with-data" id="PROGRAMA INTERNO Y PLAN DE EVACUACION">' + (feature.properties['PROGRAMA INTERNO Y PLAN DE EVACUACION'] !== null ? autolinker.link(feature.properties['PROGRAMA INTERNO Y PLAN DE EVACUACION'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">METROS DE CONSTRUCCION (m2)</th>\
+                        <td class="visible-with-data" id="METROS DE CONSTRUCCION (m2)">' + (feature.properties['METROS DE CONSTRUCCION (m2)'] !== null ? autolinker.link(feature.properties['METROS DE CONSTRUCCION (m2)'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">DIAMETRO DE ESTUDIO</th>\
+                        <td class="visible-with-data" id="DIAMETRO DE ESTUDIO">' + (feature.properties['DIAMETRO DE ESTUDIO'] !== null ? autolinker.link(feature.properties['DIAMETRO DE ESTUDIO'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">ZONAS DE ACUERDO CON EL REGLAMENTO DE CONSTRUCCIONES PARA EL DISTRITO FEDERAL</th>\
+                        <td class="visible-with-data" id="ZONAS DE ACUERDO CON EL REGLAMENTO DE CONSTRUCCIONES PARA EL DISTRITO FEDERAL">' + (feature.properties['ZONAS DE ACUERDO CON EL REGLAMENTO DE CONSTRUCCIONES PARA EL DISTRITO FEDERAL'] !== null ? autolinker.link(feature.properties['ZONAS DE ACUERDO CON EL REGLAMENTO DE CONSTRUCCIONES PARA EL DISTRITO FEDERAL'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">GRADO DE RIESGO DE INCENDIO NOM-002-STPS-2010</th>\
+                        <td class="visible-with-data" id="GRADO DE RIESGO DE INCENDIO NOM-002-STPS-2010">' + (feature.properties['GRADO DE RIESGO DE INCENDIO NOM-002-STPS-2010'] !== null ? autolinker.link(feature.properties['GRADO DE RIESGO DE INCENDIO NOM-002-STPS-2010'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">LATITUD</th>\
+                        <td class="visible-with-data" id="LATITUD">' + (feature.properties['LATITUD'] !== null ? autolinker.link(feature.properties['LATITUD'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">LONGITUD</th>\
+                        <td class="visible-with-data" id="LONGITUD">' + (feature.properties['LONGITUD'] !== null ? autolinker.link(feature.properties['LONGITUD'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            var content = removeEmptyRowsFromPopupContent(popupContent, feature);
+			layer.on('popupopen', function(e) {
+				addClassToPopupIfMedia(content, e.popup);
+			});
+			layer.bindPopup(content, { maxHeight: 400 });
+        }
+
+        function style_MilpaAlta_7_0() {
+            return {
+                pane: 'pane_MilpaAlta_7',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(90,13,215,1.0)',
+                interactive: true,
+            }
+        }
+        map.createPane('pane_MilpaAlta_7');
+        map.getPane('pane_MilpaAlta_7').style.zIndex = 407;
+        map.getPane('pane_MilpaAlta_7').style['mix-blend-mode'] = 'normal';
+        var layer_MilpaAlta_7 = new L.geoJson(json_MilpaAlta_7, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_MilpaAlta_7',
+            layerName: 'layer_MilpaAlta_7',
+            pane: 'pane_MilpaAlta_7',
+            onEachFeature: pop_MilpaAlta_7,
+            pointToLayer: function (feature, latlng) {
+                var context = {
+                    feature: feature,
+                    variables: {}
+                };
+                return L.circleMarker(latlng, style_MilpaAlta_7_0(feature));
+            },
+        });
+        bounds_group.addLayer(layer_MilpaAlta_7);
+        function pop_MagdalenaContreras_8(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <th scope="row">PREDIOS</th>\
+                        <td class="visible-with-data" id="PREDIOS">' + (feature.properties['PREDIOS'] !== null ? autolinker.link(feature.properties['PREDIOS'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">ANEXOS</th>\
+                        <td class="visible-with-data" id="ANEXOS">' + (feature.properties['ANEXOS'] !== null ? autolinker.link(feature.properties['ANEXOS'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">DIRECCION</th>\
+                        <td class="visible-with-data" id="DIRECCION">' + (feature.properties['DIRECCION'] !== null ? autolinker.link(feature.properties['DIRECCION'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">ZONA</th>\
+                        <td class="visible-with-data" id="ZONA">' + (feature.properties['ZONA'] !== null ? autolinker.link(feature.properties['ZONA'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">ALCALDIA</th>\
+                        <td class="visible-with-data" id="ALCALDIA">' + (feature.properties['ALCALDIA'] !== null ? autolinker.link(feature.properties['ALCALDIA'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">COORDINADOR DE SUB COMITÉ DE PROTECCION CIVIL (CHALECO AMARILLO)</th>\
+                        <td class="visible-with-data" id="COORDINADOR DE SUB COMITÉ DE PROTECCION CIVIL (CHALECO AMARILLO)">' + (feature.properties['COORDINADOR DE SUB COMITÉ DE PROTECCION CIVIL (CHALECO AMARILLO)'] !== null ? autolinker.link(feature.properties['COORDINADOR DE SUB COMITÉ DE PROTECCION CIVIL (CHALECO AMARILLO)'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">BRIGADISTAS DE PRIMEROS AUXILIOS (CHALECO BLANCO)</th>\
+                        <td class="visible-with-data" id="BRIGADISTAS DE PRIMEROS AUXILIOS (CHALECO BLANCO)">' + (feature.properties['BRIGADISTAS DE PRIMEROS AUXILIOS (CHALECO BLANCO)'] !== null ? autolinker.link(feature.properties['BRIGADISTAS DE PRIMEROS AUXILIOS (CHALECO BLANCO)'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">BRIGADISTA DE PREVENCION Y COMBATE DE INCENDIOS (CHALECO ROJO)</th>\
+                        <td class="visible-with-data" id="BRIGADISTA DE PREVENCION Y COMBATE DE INCENDIOS (CHALECO ROJO)">' + (feature.properties['BRIGADISTA DE PREVENCION Y COMBATE DE INCENDIOS (CHALECO ROJO)'] !== null ? autolinker.link(feature.properties['BRIGADISTA DE PREVENCION Y COMBATE DE INCENDIOS (CHALECO ROJO)'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">BRIGADISTA DE EVACUACIÓN Y REPLIEGUE (CHALECO ANARANJADO)</th>\
+                        <td class="visible-with-data" id="BRIGADISTA DE EVACUACIÓN Y REPLIEGUE (CHALECO ANARANJADO)">' + (feature.properties['BRIGADISTA DE EVACUACIÓN Y REPLIEGUE (CHALECO ANARANJADO)'] !== null ? autolinker.link(feature.properties['BRIGADISTA DE EVACUACIÓN Y REPLIEGUE (CHALECO ANARANJADO)'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">BRIGADISTA DE COMUNICACIÓN (CHALECO VERDE)</th>\
+                        <td class="visible-with-data" id="BRIGADISTA DE COMUNICACIÓN (CHALECO VERDE)">' + (feature.properties['BRIGADISTA DE COMUNICACIÓN (CHALECO VERDE)'] !== null ? autolinker.link(feature.properties['BRIGADISTA DE COMUNICACIÓN (CHALECO VERDE)'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">BRIGADISTA DE APOYO PSICOSOCIAL (AZUL CLARO)</th>\
+                        <td class="visible-with-data" id="BRIGADISTA DE APOYO PSICOSOCIAL (AZUL CLARO)">' + (feature.properties['BRIGADISTA DE APOYO PSICOSOCIAL (AZUL CLARO)'] !== null ? autolinker.link(feature.properties['BRIGADISTA DE APOYO PSICOSOCIAL (AZUL CLARO)'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">BRIGADISTA MULTIFUNCIONAL CHALECO (NARANJA Y AZUL)</th>\
+                        <td class="visible-with-data" id="BRIGADISTA MULTIFUNCIONAL CHALECO (NARANJA Y AZUL)">' + (feature.properties['BRIGADISTA MULTIFUNCIONAL CHALECO (NARANJA Y AZUL)'] !== null ? autolinker.link(feature.properties['BRIGADISTA MULTIFUNCIONAL CHALECO (NARANJA Y AZUL)'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">TOTAL DE BRIGADISTAS</th>\
+                        <td class="visible-with-data" id="TOTAL DE BRIGADISTAS">' + (feature.properties['TOTAL DE BRIGADISTAS'] !== null ? autolinker.link(feature.properties['TOTAL DE BRIGADISTAS'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">NUMERO DE PERSONAS SERVIDORAS PUBLICAS APROXIMADAS QUE LABORAN EN EL INMUEBLE 2024</th>\
+                        <td class="visible-with-data" id="NUMERO DE PERSONAS SERVIDORAS PUBLICAS APROXIMADAS QUE LABORAN EN EL INMUEBLE 2024">' + (feature.properties['NUMERO DE PERSONAS SERVIDORAS PUBLICAS APROXIMADAS QUE LABORAN EN EL INMUEBLE 2024'] !== null ? autolinker.link(feature.properties['NUMERO DE PERSONAS SERVIDORAS PUBLICAS APROXIMADAS QUE LABORAN EN EL INMUEBLE 2024'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">BRIGADISTAS DEBER SER</th>\
+                        <td class="visible-with-data" id="BRIGADISTAS DEBER SER">' + (feature.properties['BRIGADISTAS DEBER SER'] !== null ? autolinker.link(feature.properties['BRIGADISTAS DEBER SER'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">PROGRAMA INTERNO Y PLAN DE EVACUACION</th>\
+                        <td class="visible-with-data" id="PROGRAMA INTERNO Y PLAN DE EVACUACION">' + (feature.properties['PROGRAMA INTERNO Y PLAN DE EVACUACION'] !== null ? autolinker.link(feature.properties['PROGRAMA INTERNO Y PLAN DE EVACUACION'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">METROS DE CONSTRUCCION (m2)</th>\
+                        <td class="visible-with-data" id="METROS DE CONSTRUCCION (m2)">' + (feature.properties['METROS DE CONSTRUCCION (m2)'] !== null ? autolinker.link(feature.properties['METROS DE CONSTRUCCION (m2)'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">DIAMETRO DE ESTUDIO</th>\
+                        <td class="visible-with-data" id="DIAMETRO DE ESTUDIO">' + (feature.properties['DIAMETRO DE ESTUDIO'] !== null ? autolinker.link(feature.properties['DIAMETRO DE ESTUDIO'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">ZONAS DE ACUERDO CON EL REGLAMENTO DE CONSTRUCCIONES PARA EL DISTRITO FEDERAL</th>\
+                        <td class="visible-with-data" id="ZONAS DE ACUERDO CON EL REGLAMENTO DE CONSTRUCCIONES PARA EL DISTRITO FEDERAL">' + (feature.properties['ZONAS DE ACUERDO CON EL REGLAMENTO DE CONSTRUCCIONES PARA EL DISTRITO FEDERAL'] !== null ? autolinker.link(feature.properties['ZONAS DE ACUERDO CON EL REGLAMENTO DE CONSTRUCCIONES PARA EL DISTRITO FEDERAL'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">GRADO DE RIESGO DE INCENDIO NOM-002-STPS-2010</th>\
+                        <td class="visible-with-data" id="GRADO DE RIESGO DE INCENDIO NOM-002-STPS-2010">' + (feature.properties['GRADO DE RIESGO DE INCENDIO NOM-002-STPS-2010'] !== null ? autolinker.link(feature.properties['GRADO DE RIESGO DE INCENDIO NOM-002-STPS-2010'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">LATITUD</th>\
+                        <td class="visible-with-data" id="LATITUD">' + (feature.properties['LATITUD'] !== null ? autolinker.link(feature.properties['LATITUD'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">LONGITUD</th>\
+                        <td class="visible-with-data" id="LONGITUD">' + (feature.properties['LONGITUD'] !== null ? autolinker.link(feature.properties['LONGITUD'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            var content = removeEmptyRowsFromPopupContent(popupContent, feature);
+			layer.on('popupopen', function(e) {
+				addClassToPopupIfMedia(content, e.popup);
+			});
+			layer.bindPopup(content, { maxHeight: 400 });
+        }
+
+        function style_MagdalenaContreras_8_0() {
+            return {
+                pane: 'pane_MagdalenaContreras_8',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(221,197,61,1.0)',
+                interactive: true,
+            }
+        }
+        map.createPane('pane_MagdalenaContreras_8');
+        map.getPane('pane_MagdalenaContreras_8').style.zIndex = 408;
+        map.getPane('pane_MagdalenaContreras_8').style['mix-blend-mode'] = 'normal';
+        var layer_MagdalenaContreras_8 = new L.geoJson(json_MagdalenaContreras_8, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_MagdalenaContreras_8',
+            layerName: 'layer_MagdalenaContreras_8',
+            pane: 'pane_MagdalenaContreras_8',
+            onEachFeature: pop_MagdalenaContreras_8,
+            pointToLayer: function (feature, latlng) {
+                var context = {
+                    feature: feature,
+                    variables: {}
+                };
+                return L.circleMarker(latlng, style_MagdalenaContreras_8_0(feature));
+            },
+        });
+        bounds_group.addLayer(layer_MagdalenaContreras_8);
+        function pop_MiguelHidalgo_9(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <th scope="row">PREDIOS</th>\
+                        <td class="visible-with-data" id="PREDIOS">' + (feature.properties['PREDIOS'] !== null ? autolinker.link(feature.properties['PREDIOS'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">ANEXOS</th>\
+                        <td class="visible-with-data" id="ANEXOS">' + (feature.properties['ANEXOS'] !== null ? autolinker.link(feature.properties['ANEXOS'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">DIRECCION</th>\
+                        <td class="visible-with-data" id="DIRECCION">' + (feature.properties['DIRECCION'] !== null ? autolinker.link(feature.properties['DIRECCION'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">ZONA</th>\
+                        <td class="visible-with-data" id="ZONA">' + (feature.properties['ZONA'] !== null ? autolinker.link(feature.properties['ZONA'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">ALCALDIA</th>\
+                        <td class="visible-with-data" id="ALCALDIA">' + (feature.properties['ALCALDIA'] !== null ? autolinker.link(feature.properties['ALCALDIA'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">COORDINADOR DE SUB COMITÉ DE PROTECCION CIVIL (CHALECO AMARILLO)</th>\
+                        <td class="visible-with-data" id="COORDINADOR DE SUB COMITÉ DE PROTECCION CIVIL (CHALECO AMARILLO)">' + (feature.properties['COORDINADOR DE SUB COMITÉ DE PROTECCION CIVIL (CHALECO AMARILLO)'] !== null ? autolinker.link(feature.properties['COORDINADOR DE SUB COMITÉ DE PROTECCION CIVIL (CHALECO AMARILLO)'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">BRIGADISTAS DE PRIMEROS AUXILIOS (CHALECO BLANCO)</th>\
+                        <td class="visible-with-data" id="BRIGADISTAS DE PRIMEROS AUXILIOS (CHALECO BLANCO)">' + (feature.properties['BRIGADISTAS DE PRIMEROS AUXILIOS (CHALECO BLANCO)'] !== null ? autolinker.link(feature.properties['BRIGADISTAS DE PRIMEROS AUXILIOS (CHALECO BLANCO)'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">BRIGADISTA DE PREVENCION Y COMBATE DE INCENDIOS (CHALECO ROJO)</th>\
+                        <td class="visible-with-data" id="BRIGADISTA DE PREVENCION Y COMBATE DE INCENDIOS (CHALECO ROJO)">' + (feature.properties['BRIGADISTA DE PREVENCION Y COMBATE DE INCENDIOS (CHALECO ROJO)'] !== null ? autolinker.link(feature.properties['BRIGADISTA DE PREVENCION Y COMBATE DE INCENDIOS (CHALECO ROJO)'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">BRIGADISTA DE EVACUACIÓN Y REPLIEGUE (CHALECO ANARANJADO)</th>\
+                        <td class="visible-with-data" id="BRIGADISTA DE EVACUACIÓN Y REPLIEGUE (CHALECO ANARANJADO)">' + (feature.properties['BRIGADISTA DE EVACUACIÓN Y REPLIEGUE (CHALECO ANARANJADO)'] !== null ? autolinker.link(feature.properties['BRIGADISTA DE EVACUACIÓN Y REPLIEGUE (CHALECO ANARANJADO)'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">BRIGADISTA DE COMUNICACIÓN (CHALECO VERDE)</th>\
+                        <td class="visible-with-data" id="BRIGADISTA DE COMUNICACIÓN (CHALECO VERDE)">' + (feature.properties['BRIGADISTA DE COMUNICACIÓN (CHALECO VERDE)'] !== null ? autolinker.link(feature.properties['BRIGADISTA DE COMUNICACIÓN (CHALECO VERDE)'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">BRIGADISTA DE APOYO PSICOSOCIAL (AZUL CLARO)</th>\
+                        <td class="visible-with-data" id="BRIGADISTA DE APOYO PSICOSOCIAL (AZUL CLARO)">' + (feature.properties['BRIGADISTA DE APOYO PSICOSOCIAL (AZUL CLARO)'] !== null ? autolinker.link(feature.properties['BRIGADISTA DE APOYO PSICOSOCIAL (AZUL CLARO)'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">BRIGADISTA MULTIFUNCIONAL CHALECO (NARANJA Y AZUL)</th>\
+                        <td class="visible-with-data" id="BRIGADISTA MULTIFUNCIONAL CHALECO (NARANJA Y AZUL)">' + (feature.properties['BRIGADISTA MULTIFUNCIONAL CHALECO (NARANJA Y AZUL)'] !== null ? autolinker.link(feature.properties['BRIGADISTA MULTIFUNCIONAL CHALECO (NARANJA Y AZUL)'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">TOTAL DE BRIGADISTAS</th>\
+                        <td class="visible-with-data" id="TOTAL DE BRIGADISTAS">' + (feature.properties['TOTAL DE BRIGADISTAS'] !== null ? autolinker.link(feature.properties['TOTAL DE BRIGADISTAS'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">NUMERO DE PERSONAS SERVIDORAS PUBLICAS APROXIMADAS QUE LABORAN EN EL INMUEBLE 2024</th>\
+                        <td class="visible-with-data" id="NUMERO DE PERSONAS SERVIDORAS PUBLICAS APROXIMADAS QUE LABORAN EN EL INMUEBLE 2024">' + (feature.properties['NUMERO DE PERSONAS SERVIDORAS PUBLICAS APROXIMADAS QUE LABORAN EN EL INMUEBLE 2024'] !== null ? autolinker.link(feature.properties['NUMERO DE PERSONAS SERVIDORAS PUBLICAS APROXIMADAS QUE LABORAN EN EL INMUEBLE 2024'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">BRIGADISTAS DEBER SER</th>\
+                        <td class="visible-with-data" id="BRIGADISTAS DEBER SER">' + (feature.properties['BRIGADISTAS DEBER SER'] !== null ? autolinker.link(feature.properties['BRIGADISTAS DEBER SER'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">PROGRAMA INTERNO Y PLAN DE EVACUACION</th>\
+                        <td class="visible-with-data" id="PROGRAMA INTERNO Y PLAN DE EVACUACION">' + (feature.properties['PROGRAMA INTERNO Y PLAN DE EVACUACION'] !== null ? autolinker.link(feature.properties['PROGRAMA INTERNO Y PLAN DE EVACUACION'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">METROS DE CONSTRUCCION (m2)</th>\
+                        <td class="visible-with-data" id="METROS DE CONSTRUCCION (m2)">' + (feature.properties['METROS DE CONSTRUCCION (m2)'] !== null ? autolinker.link(feature.properties['METROS DE CONSTRUCCION (m2)'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">DIAMETRO DE ESTUDIO</th>\
+                        <td class="visible-with-data" id="DIAMETRO DE ESTUDIO">' + (feature.properties['DIAMETRO DE ESTUDIO'] !== null ? autolinker.link(feature.properties['DIAMETRO DE ESTUDIO'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">ZONAS DE ACUERDO CON EL REGLAMENTO DE CONSTRUCCIONES PARA EL DISTRITO FEDERAL</th>\
+                        <td class="visible-with-data" id="ZONAS DE ACUERDO CON EL REGLAMENTO DE CONSTRUCCIONES PARA EL DISTRITO FEDERAL">' + (feature.properties['ZONAS DE ACUERDO CON EL REGLAMENTO DE CONSTRUCCIONES PARA EL DISTRITO FEDERAL'] !== null ? autolinker.link(feature.properties['ZONAS DE ACUERDO CON EL REGLAMENTO DE CONSTRUCCIONES PARA EL DISTRITO FEDERAL'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">GRADO DE RIESGO DE INCENDIO NOM-002-STPS-2010</th>\
+                        <td class="visible-with-data" id="GRADO DE RIESGO DE INCENDIO NOM-002-STPS-2010">' + (feature.properties['GRADO DE RIESGO DE INCENDIO NOM-002-STPS-2010'] !== null ? autolinker.link(feature.properties['GRADO DE RIESGO DE INCENDIO NOM-002-STPS-2010'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">LATITUD</th>\
+                        <td class="visible-with-data" id="LATITUD">' + (feature.properties['LATITUD'] !== null ? autolinker.link(feature.properties['LATITUD'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">LONGITUD</th>\
+                        <td class="visible-with-data" id="LONGITUD">' + (feature.properties['LONGITUD'] !== null ? autolinker.link(feature.properties['LONGITUD'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            var content = removeEmptyRowsFromPopupContent(popupContent, feature);
+			layer.on('popupopen', function(e) {
+				addClassToPopupIfMedia(content, e.popup);
+			});
+			layer.bindPopup(content, { maxHeight: 400 });
+        }
+
+        function style_MiguelHidalgo_9_0() {
+            return {
+                pane: 'pane_MiguelHidalgo_9',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(164,113,88,1.0)',
+                interactive: true,
+            }
+        }
+        map.createPane('pane_MiguelHidalgo_9');
+        map.getPane('pane_MiguelHidalgo_9').style.zIndex = 409;
+        map.getPane('pane_MiguelHidalgo_9').style['mix-blend-mode'] = 'normal';
+        var layer_MiguelHidalgo_9 = new L.geoJson(json_MiguelHidalgo_9, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_MiguelHidalgo_9',
+            layerName: 'layer_MiguelHidalgo_9',
+            pane: 'pane_MiguelHidalgo_9',
+            onEachFeature: pop_MiguelHidalgo_9,
+            pointToLayer: function (feature, latlng) {
+                var context = {
+                    feature: feature,
+                    variables: {}
+                };
+                return L.circleMarker(latlng, style_MiguelHidalgo_9_0(feature));
+            },
+        });
+        bounds_group.addLayer(layer_MiguelHidalgo_9);
+        function pop_Iztapalapa_10(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <th scope="row">PREDIOS</th>\
+                        <td class="visible-with-data" id="PREDIOS">' + (feature.properties['PREDIOS'] !== null ? autolinker.link(feature.properties['PREDIOS'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">ANEXOS</th>\
+                        <td class="visible-with-data" id="ANEXOS">' + (feature.properties['ANEXOS'] !== null ? autolinker.link(feature.properties['ANEXOS'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">DIRECCION</th>\
+                        <td class="visible-with-data" id="DIRECCION">' + (feature.properties['DIRECCION'] !== null ? autolinker.link(feature.properties['DIRECCION'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">ZONA</th>\
+                        <td class="visible-with-data" id="ZONA">' + (feature.properties['ZONA'] !== null ? autolinker.link(feature.properties['ZONA'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">ALCALDIA</th>\
+                        <td class="visible-with-data" id="ALCALDIA">' + (feature.properties['ALCALDIA'] !== null ? autolinker.link(feature.properties['ALCALDIA'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">COORDINADOR DE SUB COMITÉ DE PROTECCION CIVIL (CHALECO AMARILLO)</th>\
+                        <td class="visible-with-data" id="COORDINADOR DE SUB COMITÉ DE PROTECCION CIVIL (CHALECO AMARILLO)">' + (feature.properties['COORDINADOR DE SUB COMITÉ DE PROTECCION CIVIL (CHALECO AMARILLO)'] !== null ? autolinker.link(feature.properties['COORDINADOR DE SUB COMITÉ DE PROTECCION CIVIL (CHALECO AMARILLO)'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">BRIGADISTAS DE PRIMEROS AUXILIOS (CHALECO BLANCO)</th>\
+                        <td class="visible-with-data" id="BRIGADISTAS DE PRIMEROS AUXILIOS (CHALECO BLANCO)">' + (feature.properties['BRIGADISTAS DE PRIMEROS AUXILIOS (CHALECO BLANCO)'] !== null ? autolinker.link(feature.properties['BRIGADISTAS DE PRIMEROS AUXILIOS (CHALECO BLANCO)'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">BRIGADISTA DE PREVENCION Y COMBATE DE INCENDIOS (CHALECO ROJO)</th>\
+                        <td class="visible-with-data" id="BRIGADISTA DE PREVENCION Y COMBATE DE INCENDIOS (CHALECO ROJO)">' + (feature.properties['BRIGADISTA DE PREVENCION Y COMBATE DE INCENDIOS (CHALECO ROJO)'] !== null ? autolinker.link(feature.properties['BRIGADISTA DE PREVENCION Y COMBATE DE INCENDIOS (CHALECO ROJO)'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">BRIGADISTA DE EVACUACIÓN Y REPLIEGUE (CHALECO ANARANJADO)</th>\
+                        <td>' + (feature.properties['BRIGADISTA DE EVACUACIÓN Y REPLIEGUE (CHALECO ANARANJADO)'] !== null ? autolinker.link(feature.properties['BRIGADISTA DE EVACUACIÓN Y REPLIEGUE (CHALECO ANARANJADO)'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">BRIGADISTA DE COMUNICACIÓN (CHALECO VERDE)</th>\
+                        <td class="visible-with-data" id="BRIGADISTA DE COMUNICACIÓN (CHALECO VERDE)">' + (feature.properties['BRIGADISTA DE COMUNICACIÓN (CHALECO VERDE)'] !== null ? autolinker.link(feature.properties['BRIGADISTA DE COMUNICACIÓN (CHALECO VERDE)'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">BRIGADISTA DE APOYO PSICOSOCIAL (AZUL CLARO)</th>\
+                        <td class="visible-with-data" id="BRIGADISTA DE APOYO PSICOSOCIAL (AZUL CLARO)">' + (feature.properties['BRIGADISTA DE APOYO PSICOSOCIAL (AZUL CLARO)'] !== null ? autolinker.link(feature.properties['BRIGADISTA DE APOYO PSICOSOCIAL (AZUL CLARO)'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">BRIGADISTA MULTIFUNCIONAL CHALECO (NARANJA Y AZUL)</th>\
+                        <td class="visible-with-data" id="BRIGADISTA MULTIFUNCIONAL CHALECO (NARANJA Y AZUL)">' + (feature.properties['BRIGADISTA MULTIFUNCIONAL CHALECO (NARANJA Y AZUL)'] !== null ? autolinker.link(feature.properties['BRIGADISTA MULTIFUNCIONAL CHALECO (NARANJA Y AZUL)'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">TOTAL DE BRIGADISTAS</th>\
+                        <td class="visible-with-data" id="TOTAL DE BRIGADISTAS">' + (feature.properties['TOTAL DE BRIGADISTAS'] !== null ? autolinker.link(feature.properties['TOTAL DE BRIGADISTAS'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">NUMERO DE PERSONAS SERVIDORAS PUBLICAS APROXIMADAS QUE LABORAN EN EL INMUEBLE 2024</th>\
+                        <td class="visible-with-data" id="NUMERO DE PERSONAS SERVIDORAS PUBLICAS APROXIMADAS QUE LABORAN EN EL INMUEBLE 2024">' + (feature.properties['NUMERO DE PERSONAS SERVIDORAS PUBLICAS APROXIMADAS QUE LABORAN EN EL INMUEBLE 2024'] !== null ? autolinker.link(feature.properties['NUMERO DE PERSONAS SERVIDORAS PUBLICAS APROXIMADAS QUE LABORAN EN EL INMUEBLE 2024'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">BRIGADISTAS DEBER SER</th>\
+                        <td class="visible-with-data" id="BRIGADISTAS DEBER SER">' + (feature.properties['BRIGADISTAS DEBER SER'] !== null ? autolinker.link(feature.properties['BRIGADISTAS DEBER SER'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">PROGRAMA INTERNO Y PLAN DE EVACUACION</th>\
+                        <td class="visible-with-data" id="PROGRAMA INTERNO Y PLAN DE EVACUACION">' + (feature.properties['PROGRAMA INTERNO Y PLAN DE EVACUACION'] !== null ? autolinker.link(feature.properties['PROGRAMA INTERNO Y PLAN DE EVACUACION'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">METROS DE CONSTRUCCION (m2)</th>\
+                        <td class="visible-with-data" id="METROS DE CONSTRUCCION (m2)">' + (feature.properties['METROS DE CONSTRUCCION (m2)'] !== null ? autolinker.link(feature.properties['METROS DE CONSTRUCCION (m2)'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">DIAMETRO DE ESTUDIO</th>\
+                        <td class="visible-with-data" id="DIAMETRO DE ESTUDIO">' + (feature.properties['DIAMETRO DE ESTUDIO'] !== null ? autolinker.link(feature.properties['DIAMETRO DE ESTUDIO'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">ZONAS DE ACUERDO CON EL REGLAMENTO DE CONSTRUCCIONES PARA EL DISTRITO FEDERAL</th>\
+                        <td class="visible-with-data" id="ZONAS DE ACUERDO CON EL REGLAMENTO DE CONSTRUCCIONES PARA EL DISTRITO FEDERAL">' + (feature.properties['ZONAS DE ACUERDO CON EL REGLAMENTO DE CONSTRUCCIONES PARA EL DISTRITO FEDERAL'] !== null ? autolinker.link(feature.properties['ZONAS DE ACUERDO CON EL REGLAMENTO DE CONSTRUCCIONES PARA EL DISTRITO FEDERAL'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">GRADO DE RIESGO DE INCENDIO NOM-002-STPS-2010</th>\
+                        <td class="visible-with-data" id="GRADO DE RIESGO DE INCENDIO NOM-002-STPS-2010">' + (feature.properties['GRADO DE RIESGO DE INCENDIO NOM-002-STPS-2010'] !== null ? autolinker.link(feature.properties['GRADO DE RIESGO DE INCENDIO NOM-002-STPS-2010'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">LATITUD</th>\
+                        <td class="visible-with-data" id="LATITUD">' + (feature.properties['LATITUD'] !== null ? autolinker.link(feature.properties['LATITUD'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">LONGITUD</th>\
+                        <td class="visible-with-data" id="LONGITUD">' + (feature.properties['LONGITUD'] !== null ? autolinker.link(feature.properties['LONGITUD'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            var content = removeEmptyRowsFromPopupContent(popupContent, feature);
+			layer.on('popupopen', function(e) {
+				addClassToPopupIfMedia(content, e.popup);
+			});
+			layer.bindPopup(content, { maxHeight: 400 });
+        }
+
+        function style_Iztapalapa_10_0() {
+            return {
+                pane: 'pane_Iztapalapa_10',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(91,172,210,1.0)',
+                interactive: true,
+            }
+        }
+        map.createPane('pane_Iztapalapa_10');
+        map.getPane('pane_Iztapalapa_10').style.zIndex = 410;
+        map.getPane('pane_Iztapalapa_10').style['mix-blend-mode'] = 'normal';
+        var layer_Iztapalapa_10 = new L.geoJson(json_Iztapalapa_10, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_Iztapalapa_10',
+            layerName: 'layer_Iztapalapa_10',
+            pane: 'pane_Iztapalapa_10',
+            onEachFeature: pop_Iztapalapa_10,
+            pointToLayer: function (feature, latlng) {
+                var context = {
+                    feature: feature,
+                    variables: {}
+                };
+                return L.circleMarker(latlng, style_Iztapalapa_10_0(feature));
+            },
+        });
+        bounds_group.addLayer(layer_Iztapalapa_10);
+        function pop_Iztacalco_11(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <th scope="row">PREDIOS</th>\
+                        <td class="visible-with-data" id="PREDIOS">' + (feature.properties['PREDIOS'] !== null ? autolinker.link(feature.properties['PREDIOS'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">ANEXOS</th>\
+                        <td class="visible-with-data" id="ANEXOS">' + (feature.properties['ANEXOS'] !== null ? autolinker.link(feature.properties['ANEXOS'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">DIRECCION</th>\
+                        <td class="visible-with-data" id="DIRECCION">' + (feature.properties['DIRECCION'] !== null ? autolinker.link(feature.properties['DIRECCION'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">ZONA</th>\
+                        <td class="visible-with-data" id="ZONA">' + (feature.properties['ZONA'] !== null ? autolinker.link(feature.properties['ZONA'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">ALCALDIA</th>\
+                        <td class="visible-with-data" id="ALCALDIA">' + (feature.properties['ALCALDIA'] !== null ? autolinker.link(feature.properties['ALCALDIA'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">COORDINADOR DE SUB COMITÉ DE PROTECCION CIVIL (CHALECO AMARILLO)</th>\
+                        <td class="visible-with-data" id="COORDINADOR DE SUB COMITÉ DE PROTECCION CIVIL (CHALECO AMARILLO)">' + (feature.properties['COORDINADOR DE SUB COMITÉ DE PROTECCION CIVIL (CHALECO AMARILLO)'] !== null ? autolinker.link(feature.properties['COORDINADOR DE SUB COMITÉ DE PROTECCION CIVIL (CHALECO AMARILLO)'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">BRIGADISTAS DE PRIMEROS AUXILIOS (CHALECO BLANCO)</th>\
+                        <td class="visible-with-data" id="BRIGADISTAS DE PRIMEROS AUXILIOS (CHALECO BLANCO)">' + (feature.properties['BRIGADISTAS DE PRIMEROS AUXILIOS (CHALECO BLANCO)'] !== null ? autolinker.link(feature.properties['BRIGADISTAS DE PRIMEROS AUXILIOS (CHALECO BLANCO)'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">BRIGADISTA DE PREVENCION Y COMBATE DE INCENDIOS (CHALECO ROJO)</th>\
+                        <td class="visible-with-data" id="BRIGADISTA DE PREVENCION Y COMBATE DE INCENDIOS (CHALECO ROJO)">' + (feature.properties['BRIGADISTA DE PREVENCION Y COMBATE DE INCENDIOS (CHALECO ROJO)'] !== null ? autolinker.link(feature.properties['BRIGADISTA DE PREVENCION Y COMBATE DE INCENDIOS (CHALECO ROJO)'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">BRIGADISTA DE EVACUACIÓN Y REPLIEGUE (CHALECO ANARANJADO)</th>\
+                        <td class="visible-with-data" id="BRIGADISTA DE EVACUACIÓN Y REPLIEGUE (CHALECO ANARANJADO)">' + (feature.properties['BRIGADISTA DE EVACUACIÓN Y REPLIEGUE (CHALECO ANARANJADO)'] !== null ? autolinker.link(feature.properties['BRIGADISTA DE EVACUACIÓN Y REPLIEGUE (CHALECO ANARANJADO)'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">BRIGADISTA DE COMUNICACIÓN (CHALECO VERDE)</th>\
+                        <td class="visible-with-data" id="BRIGADISTA DE COMUNICACIÓN (CHALECO VERDE)">' + (feature.properties['BRIGADISTA DE COMUNICACIÓN (CHALECO VERDE)'] !== null ? autolinker.link(feature.properties['BRIGADISTA DE COMUNICACIÓN (CHALECO VERDE)'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">BRIGADISTA DE APOYO PSICOSOCIAL (AZUL CLARO)</th>\
+                        <td class="visible-with-data" id="BRIGADISTA DE APOYO PSICOSOCIAL (AZUL CLARO)">' + (feature.properties['BRIGADISTA DE APOYO PSICOSOCIAL (AZUL CLARO)'] !== null ? autolinker.link(feature.properties['BRIGADISTA DE APOYO PSICOSOCIAL (AZUL CLARO)'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">BRIGADISTA MULTIFUNCIONAL CHALECO (NARANJA Y AZUL)</th>\
+                        <td class="visible-with-data" id="BRIGADISTA MULTIFUNCIONAL CHALECO (NARANJA Y AZUL)">' + (feature.properties['BRIGADISTA MULTIFUNCIONAL CHALECO (NARANJA Y AZUL)'] !== null ? autolinker.link(feature.properties['BRIGADISTA MULTIFUNCIONAL CHALECO (NARANJA Y AZUL)'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">TOTAL DE BRIGADISTAS</th>\
+                        <td class="visible-with-data" id="TOTAL DE BRIGADISTAS">' + (feature.properties['TOTAL DE BRIGADISTAS'] !== null ? autolinker.link(feature.properties['TOTAL DE BRIGADISTAS'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">NUMERO DE PERSONAS SERVIDORAS PUBLICAS APROXIMADAS QUE LABORAN EN EL INMUEBLE 2024</th>\
+                        <td class="visible-with-data" id="NUMERO DE PERSONAS SERVIDORAS PUBLICAS APROXIMADAS QUE LABORAN EN EL INMUEBLE 2024">' + (feature.properties['NUMERO DE PERSONAS SERVIDORAS PUBLICAS APROXIMADAS QUE LABORAN EN EL INMUEBLE 2024'] !== null ? autolinker.link(feature.properties['NUMERO DE PERSONAS SERVIDORAS PUBLICAS APROXIMADAS QUE LABORAN EN EL INMUEBLE 2024'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">BRIGADISTAS DEBER SER</th>\
+                        <td class="visible-with-data" id="BRIGADISTAS DEBER SER">' + (feature.properties['BRIGADISTAS DEBER SER'] !== null ? autolinker.link(feature.properties['BRIGADISTAS DEBER SER'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">PROGRAMA INTERNO Y PLAN DE EVACUACION</th>\
+                        <td class="visible-with-data" id="PROGRAMA INTERNO Y PLAN DE EVACUACION">' + (feature.properties['PROGRAMA INTERNO Y PLAN DE EVACUACION'] !== null ? autolinker.link(feature.properties['PROGRAMA INTERNO Y PLAN DE EVACUACION'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">METROS DE CONSTRUCCION (m2)</th>\
+                        <td class="visible-with-data" id="METROS DE CONSTRUCCION (m2)">' + (feature.properties['METROS DE CONSTRUCCION (m2)'] !== null ? autolinker.link(feature.properties['METROS DE CONSTRUCCION (m2)'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">DIAMETRO DE ESTUDIO</th>\
+                        <td class="visible-with-data" id="DIAMETRO DE ESTUDIO">' + (feature.properties['DIAMETRO DE ESTUDIO'] !== null ? autolinker.link(feature.properties['DIAMETRO DE ESTUDIO'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">ZONAS DE ACUERDO CON EL REGLAMENTO DE CONSTRUCCIONES PARA EL DISTRITO FEDERAL</th>\
+                        <td class="visible-with-data" id="ZONAS DE ACUERDO CON EL REGLAMENTO DE CONSTRUCCIONES PARA EL DISTRITO FEDERAL">' + (feature.properties['ZONAS DE ACUERDO CON EL REGLAMENTO DE CONSTRUCCIONES PARA EL DISTRITO FEDERAL'] !== null ? autolinker.link(feature.properties['ZONAS DE ACUERDO CON EL REGLAMENTO DE CONSTRUCCIONES PARA EL DISTRITO FEDERAL'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">GRADO DE RIESGO DE INCENDIO NOM-002-STPS-2010</th>\
+                        <td class="visible-with-data" id="GRADO DE RIESGO DE INCENDIO NOM-002-STPS-2010">' + (feature.properties['GRADO DE RIESGO DE INCENDIO NOM-002-STPS-2010'] !== null ? autolinker.link(feature.properties['GRADO DE RIESGO DE INCENDIO NOM-002-STPS-2010'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">LATITUD</th>\
+                        <td class="visible-with-data" id="LATITUD">' + (feature.properties['LATITUD'] !== null ? autolinker.link(feature.properties['LATITUD'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">LONGITUD</th>\
+                        <td class="visible-with-data" id="LONGITUD">' + (feature.properties['LONGITUD'] !== null ? autolinker.link(feature.properties['LONGITUD'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            var content = removeEmptyRowsFromPopupContent(popupContent, feature);
+			layer.on('popupopen', function(e) {
+				addClassToPopupIfMedia(content, e.popup);
+			});
+			layer.bindPopup(content, { maxHeight: 400 });
+        }
+
+        function style_Iztacalco_11_0() {
+            return {
+                pane: 'pane_Iztacalco_11',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(190,178,151,1.0)',
+                interactive: true,
+            }
+        }
+        map.createPane('pane_Iztacalco_11');
+        map.getPane('pane_Iztacalco_11').style.zIndex = 411;
+        map.getPane('pane_Iztacalco_11').style['mix-blend-mode'] = 'normal';
+        var layer_Iztacalco_11 = new L.geoJson(json_Iztacalco_11, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_Iztacalco_11',
+            layerName: 'layer_Iztacalco_11',
+            pane: 'pane_Iztacalco_11',
+            onEachFeature: pop_Iztacalco_11,
+            pointToLayer: function (feature, latlng) {
+                var context = {
+                    feature: feature,
+                    variables: {}
+                };
+                return L.circleMarker(latlng, style_Iztacalco_11_0(feature));
+            },
+        });
+        bounds_group.addLayer(layer_Iztacalco_11);
+        function pop_GustavoAMadero_12(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <th scope="row">PREDIOS</th>\
+                        <td class="visible-with-data" id="PREDIOS">' + (feature.properties['PREDIOS'] !== null ? autolinker.link(feature.properties['PREDIOS'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">ANEXOS</th>\
+                        <td class="visible-with-data" id="ANEXOS">' + (feature.properties['ANEXOS'] !== null ? autolinker.link(feature.properties['ANEXOS'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">DIRECCION</th>\
+                        <td class="visible-with-data" id="DIRECCION">' + (feature.properties['DIRECCION'] !== null ? autolinker.link(feature.properties['DIRECCION'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">ZONA</th>\
+                        <td class="visible-with-data" id="ZONA">' + (feature.properties['ZONA'] !== null ? autolinker.link(feature.properties['ZONA'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">ALCALDIA</th>\
+                        <td class="visible-with-data" id="ALCALDIA">' + (feature.properties['ALCALDIA'] !== null ? autolinker.link(feature.properties['ALCALDIA'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">COORDINADOR DE SUB COMITÉ DE PROTECCION CIVIL (CHALECO AMARILLO)</th>\
+                        <td class="visible-with-data" id="COORDINADOR DE SUB COMITÉ DE PROTECCION CIVIL (CHALECO AMARILLO)">' + (feature.properties['COORDINADOR DE SUB COMITÉ DE PROTECCION CIVIL (CHALECO AMARILLO)'] !== null ? autolinker.link(feature.properties['COORDINADOR DE SUB COMITÉ DE PROTECCION CIVIL (CHALECO AMARILLO)'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">BRIGADISTAS DE PRIMEROS AUXILIOS (CHALECO BLANCO)</th>\
+                        <td class="visible-with-data" id="BRIGADISTAS DE PRIMEROS AUXILIOS (CHALECO BLANCO)">' + (feature.properties['BRIGADISTAS DE PRIMEROS AUXILIOS (CHALECO BLANCO)'] !== null ? autolinker.link(feature.properties['BRIGADISTAS DE PRIMEROS AUXILIOS (CHALECO BLANCO)'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">BRIGADISTA DE PREVENCION Y COMBATE DE INCENDIOS (CHALECO ROJO)</th>\
+                        <td class="visible-with-data" id="BRIGADISTA DE PREVENCION Y COMBATE DE INCENDIOS (CHALECO ROJO)">' + (feature.properties['BRIGADISTA DE PREVENCION Y COMBATE DE INCENDIOS (CHALECO ROJO)'] !== null ? autolinker.link(feature.properties['BRIGADISTA DE PREVENCION Y COMBATE DE INCENDIOS (CHALECO ROJO)'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">BRIGADISTA DE EVACUACIÓN Y REPLIEGUE (CHALECO ANARANJADO)</th>\
+                        <td class="visible-with-data" id="BRIGADISTA DE EVACUACIÓN Y REPLIEGUE (CHALECO ANARANJADO)">' + (feature.properties['BRIGADISTA DE EVACUACIÓN Y REPLIEGUE (CHALECO ANARANJADO)'] !== null ? autolinker.link(feature.properties['BRIGADISTA DE EVACUACIÓN Y REPLIEGUE (CHALECO ANARANJADO)'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">BRIGADISTA DE COMUNICACIÓN (CHALECO VERDE)</th>\
+                        <td class="visible-with-data" id="BRIGADISTA DE COMUNICACIÓN (CHALECO VERDE)">' + (feature.properties['BRIGADISTA DE COMUNICACIÓN (CHALECO VERDE)'] !== null ? autolinker.link(feature.properties['BRIGADISTA DE COMUNICACIÓN (CHALECO VERDE)'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">BRIGADISTA DE APOYO PSICOSOCIAL (AZUL CLARO)</th>\
+                        <td class="visible-with-data" id="BRIGADISTA DE APOYO PSICOSOCIAL (AZUL CLARO)">' + (feature.properties['BRIGADISTA DE APOYO PSICOSOCIAL (AZUL CLARO)'] !== null ? autolinker.link(feature.properties['BRIGADISTA DE APOYO PSICOSOCIAL (AZUL CLARO)'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">BRIGADISTA MULTIFUNCIONAL CHALECO (NARANJA Y AZUL)</th>\
+                        <td class="visible-with-data" id="BRIGADISTA MULTIFUNCIONAL CHALECO (NARANJA Y AZUL)">' + (feature.properties['BRIGADISTA MULTIFUNCIONAL CHALECO (NARANJA Y AZUL)'] !== null ? autolinker.link(feature.properties['BRIGADISTA MULTIFUNCIONAL CHALECO (NARANJA Y AZUL)'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">TOTAL DE BRIGADISTAS</th>\
+                        <td class="visible-with-data" id="TOTAL DE BRIGADISTAS">' + (feature.properties['TOTAL DE BRIGADISTAS'] !== null ? autolinker.link(feature.properties['TOTAL DE BRIGADISTAS'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">NUMERO DE PERSONAS SERVIDORAS PUBLICAS APROXIMADAS QUE LABORAN EN EL INMUEBLE 2024</th>\
+                        <td class="visible-with-data" id="NUMERO DE PERSONAS SERVIDORAS PUBLICAS APROXIMADAS QUE LABORAN EN EL INMUEBLE 2024">' + (feature.properties['NUMERO DE PERSONAS SERVIDORAS PUBLICAS APROXIMADAS QUE LABORAN EN EL INMUEBLE 2024'] !== null ? autolinker.link(feature.properties['NUMERO DE PERSONAS SERVIDORAS PUBLICAS APROXIMADAS QUE LABORAN EN EL INMUEBLE 2024'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">BRIGADISTAS DEBER SER</th>\
+                        <td class="visible-with-data" id="BRIGADISTAS DEBER SER">' + (feature.properties['BRIGADISTAS DEBER SER'] !== null ? autolinker.link(feature.properties['BRIGADISTAS DEBER SER'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">PROGRAMA INTERNO Y PLAN DE EVACUACION</th>\
+                        <td class="visible-with-data" id="PROGRAMA INTERNO Y PLAN DE EVACUACION">' + (feature.properties['PROGRAMA INTERNO Y PLAN DE EVACUACION'] !== null ? autolinker.link(feature.properties['PROGRAMA INTERNO Y PLAN DE EVACUACION'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">METROS DE CONSTRUCCION (m2)</th>\
+                        <td class="visible-with-data" id="METROS DE CONSTRUCCION (m2)">' + (feature.properties['METROS DE CONSTRUCCION (m2)'] !== null ? autolinker.link(feature.properties['METROS DE CONSTRUCCION (m2)'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">DIAMETRO DE ESTUDIO</th>\
+                        <td class="visible-with-data" id="DIAMETRO DE ESTUDIO">' + (feature.properties['DIAMETRO DE ESTUDIO'] !== null ? autolinker.link(feature.properties['DIAMETRO DE ESTUDIO'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">ZONAS DE ACUERDO CON EL REGLAMENTO DE CONSTRUCCIONES PARA EL DISTRITO FEDERAL</th>\
+                        <td class="visible-with-data" id="ZONAS DE ACUERDO CON EL REGLAMENTO DE CONSTRUCCIONES PARA EL DISTRITO FEDERAL">' + (feature.properties['ZONAS DE ACUERDO CON EL REGLAMENTO DE CONSTRUCCIONES PARA EL DISTRITO FEDERAL'] !== null ? autolinker.link(feature.properties['ZONAS DE ACUERDO CON EL REGLAMENTO DE CONSTRUCCIONES PARA EL DISTRITO FEDERAL'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">GRADO DE RIESGO DE INCENDIO NOM-002-STPS-2010</th>\
+                        <td class="visible-with-data" id="GRADO DE RIESGO DE INCENDIO NOM-002-STPS-2010">' + (feature.properties['GRADO DE RIESGO DE INCENDIO NOM-002-STPS-2010'] !== null ? autolinker.link(feature.properties['GRADO DE RIESGO DE INCENDIO NOM-002-STPS-2010'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">LATITUD</th>\
+                        <td class="visible-with-data" id="LATITUD">' + (feature.properties['LATITUD'] !== null ? autolinker.link(feature.properties['LATITUD'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">LONGITUD</th>\
+                        <td class="visible-with-data" id="LONGITUD">' + (feature.properties['LONGITUD'] !== null ? autolinker.link(feature.properties['LONGITUD'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            var content = removeEmptyRowsFromPopupContent(popupContent, feature);
+			layer.on('popupopen', function(e) {
+				addClassToPopupIfMedia(content, e.popup);
+			});
+			layer.bindPopup(content, { maxHeight: 400 });
+        }
+
+        function style_GustavoAMadero_12_0() {
+            return {
+                pane: 'pane_GustavoAMadero_12',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(234,124,22,1.0)',
+                interactive: true,
+            }
+        }
+        map.createPane('pane_GustavoAMadero_12');
+        map.getPane('pane_GustavoAMadero_12').style.zIndex = 412;
+        map.getPane('pane_GustavoAMadero_12').style['mix-blend-mode'] = 'normal';
+        var layer_GustavoAMadero_12 = new L.geoJson(json_GustavoAMadero_12, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_GustavoAMadero_12',
+            layerName: 'layer_GustavoAMadero_12',
+            pane: 'pane_GustavoAMadero_12',
+            onEachFeature: pop_GustavoAMadero_12,
+            pointToLayer: function (feature, latlng) {
+                var context = {
+                    feature: feature,
+                    variables: {}
+                };
+                return L.circleMarker(latlng, style_GustavoAMadero_12_0(feature));
+            },
+        });
+        bounds_group.addLayer(layer_GustavoAMadero_12);
+        function pop_Cuauhtmoc_13(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <th scope="row">PREDIOS</th>\
+                        <td class="visible-with-data" id="PREDIOS">' + (feature.properties['PREDIOS'] !== null ? autolinker.link(feature.properties['PREDIOS'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">ANEXOS</th>\
+                        <td class="visible-with-data" id="ANEXOS">' + (feature.properties['ANEXOS'] !== null ? autolinker.link(feature.properties['ANEXOS'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">DIRECCION</th>\
+                        <td class="visible-with-data" id="DIRECCION">' + (feature.properties['DIRECCION'] !== null ? autolinker.link(feature.properties['DIRECCION'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">ZONA</th>\
+                        <td class="visible-with-data" id="ZONA">' + (feature.properties['ZONA'] !== null ? autolinker.link(feature.properties['ZONA'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">ALCALDIA</th>\
+                        <td class="visible-with-data" id="ALCALDIA">' + (feature.properties['ALCALDIA'] !== null ? autolinker.link(feature.properties['ALCALDIA'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">COORDINADOR DE SUB COMITÉ DE PROTECCION CIVIL (CHALECO AMARILLO)</th>\
+                        <td class="visible-with-data" id="COORDINADOR DE SUB COMITÉ DE PROTECCION CIVIL (CHALECO AMARILLO)">' + (feature.properties['COORDINADOR DE SUB COMITÉ DE PROTECCION CIVIL (CHALECO AMARILLO)'] !== null ? autolinker.link(feature.properties['COORDINADOR DE SUB COMITÉ DE PROTECCION CIVIL (CHALECO AMARILLO)'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">BRIGADISTAS DE PRIMEROS AUXILIOS (CHALECO BLANCO)</th>\
+                        <td class="visible-with-data" id="BRIGADISTAS DE PRIMEROS AUXILIOS (CHALECO BLANCO)">' + (feature.properties['BRIGADISTAS DE PRIMEROS AUXILIOS (CHALECO BLANCO)'] !== null ? autolinker.link(feature.properties['BRIGADISTAS DE PRIMEROS AUXILIOS (CHALECO BLANCO)'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">BRIGADISTA DE PREVENCION Y COMBATE DE INCENDIOS (CHALECO ROJO)</th>\
+                        <td class="visible-with-data" id="BRIGADISTA DE PREVENCION Y COMBATE DE INCENDIOS (CHALECO ROJO)">' + (feature.properties['BRIGADISTA DE PREVENCION Y COMBATE DE INCENDIOS (CHALECO ROJO)'] !== null ? autolinker.link(feature.properties['BRIGADISTA DE PREVENCION Y COMBATE DE INCENDIOS (CHALECO ROJO)'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">BRIGADISTA DE EVACUACIÓN Y REPLIEGUE (CHALECO ANARANJADO)</th>\
+                        <td class="visible-with-data" id="BRIGADISTA DE EVACUACIÓN Y REPLIEGUE (CHALECO ANARANJADO)">' + (feature.properties['BRIGADISTA DE EVACUACIÓN Y REPLIEGUE (CHALECO ANARANJADO)'] !== null ? autolinker.link(feature.properties['BRIGADISTA DE EVACUACIÓN Y REPLIEGUE (CHALECO ANARANJADO)'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">BRIGADISTA DE COMUNICACIÓN (CHALECO VERDE)</th>\
+                        <td class="visible-with-data" id="BRIGADISTA DE COMUNICACIÓN (CHALECO VERDE)">' + (feature.properties['BRIGADISTA DE COMUNICACIÓN (CHALECO VERDE)'] !== null ? autolinker.link(feature.properties['BRIGADISTA DE COMUNICACIÓN (CHALECO VERDE)'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">BRIGADISTA DE APOYO PSICOSOCIAL (AZUL CLARO)</th>\
+                        <td class="visible-with-data" id="BRIGADISTA DE APOYO PSICOSOCIAL (AZUL CLARO)">' + (feature.properties['BRIGADISTA DE APOYO PSICOSOCIAL (AZUL CLARO)'] !== null ? autolinker.link(feature.properties['BRIGADISTA DE APOYO PSICOSOCIAL (AZUL CLARO)'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">BRIGADISTA MULTIFUNCIONAL CHALECO (NARANJA Y AZUL)</th>\
+                        <td class="visible-with-data" id="BRIGADISTA MULTIFUNCIONAL CHALECO (NARANJA Y AZUL)">' + (feature.properties['BRIGADISTA MULTIFUNCIONAL CHALECO (NARANJA Y AZUL)'] !== null ? autolinker.link(feature.properties['BRIGADISTA MULTIFUNCIONAL CHALECO (NARANJA Y AZUL)'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">TOTAL DE BRIGADISTAS</th>\
+                        <td class="visible-with-data" id="TOTAL DE BRIGADISTAS">' + (feature.properties['TOTAL DE BRIGADISTAS'] !== null ? autolinker.link(feature.properties['TOTAL DE BRIGADISTAS'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">NUMERO DE PERSONAS SERVIDORAS PUBLICAS APROXIMADAS QUE LABORAN EN EL INMUEBLE 2024</th>\
+                        <td class="visible-with-data" id="NUMERO DE PERSONAS SERVIDORAS PUBLICAS APROXIMADAS QUE LABORAN EN EL INMUEBLE 2024">' + (feature.properties['NUMERO DE PERSONAS SERVIDORAS PUBLICAS APROXIMADAS QUE LABORAN EN EL INMUEBLE 2024'] !== null ? autolinker.link(feature.properties['NUMERO DE PERSONAS SERVIDORAS PUBLICAS APROXIMADAS QUE LABORAN EN EL INMUEBLE 2024'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">BRIGADISTAS DEBER SER</th>\
+                        <td class="visible-with-data" id="BRIGADISTAS DEBER SER">' + (feature.properties['BRIGADISTAS DEBER SER'] !== null ? autolinker.link(feature.properties['BRIGADISTAS DEBER SER'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">PROGRAMA INTERNO Y PLAN DE EVACUACION</th>\
+                        <td class="visible-with-data" id="PROGRAMA INTERNO Y PLAN DE EVACUACION">' + (feature.properties['PROGRAMA INTERNO Y PLAN DE EVACUACION'] !== null ? autolinker.link(feature.properties['PROGRAMA INTERNO Y PLAN DE EVACUACION'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">METROS DE CONSTRUCCION (m2)</th>\
+                        <td class="visible-with-data" id="METROS DE CONSTRUCCION (m2)">' + (feature.properties['METROS DE CONSTRUCCION (m2)'] !== null ? autolinker.link(feature.properties['METROS DE CONSTRUCCION (m2)'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">DIAMETRO DE ESTUDIO</th>\
+                        <td class="visible-with-data" id="DIAMETRO DE ESTUDIO">' + (feature.properties['DIAMETRO DE ESTUDIO'] !== null ? autolinker.link(feature.properties['DIAMETRO DE ESTUDIO'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">ZONAS DE ACUERDO CON EL REGLAMENTO DE CONSTRUCCIONES PARA EL DISTRITO FEDERAL</th>\
+                        <td class="visible-with-data" id="ZONAS DE ACUERDO CON EL REGLAMENTO DE CONSTRUCCIONES PARA EL DISTRITO FEDERAL">' + (feature.properties['ZONAS DE ACUERDO CON EL REGLAMENTO DE CONSTRUCCIONES PARA EL DISTRITO FEDERAL'] !== null ? autolinker.link(feature.properties['ZONAS DE ACUERDO CON EL REGLAMENTO DE CONSTRUCCIONES PARA EL DISTRITO FEDERAL'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">GRADO DE RIESGO DE INCENDIO NOM-002-STPS-2010</th>\
+                        <td class="visible-with-data" id="GRADO DE RIESGO DE INCENDIO NOM-002-STPS-2010">' + (feature.properties['GRADO DE RIESGO DE INCENDIO NOM-002-STPS-2010'] !== null ? autolinker.link(feature.properties['GRADO DE RIESGO DE INCENDIO NOM-002-STPS-2010'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">LATITUD</th>\
+                        <td class="visible-with-data" id="LATITUD">' + (feature.properties['LATITUD'] !== null ? autolinker.link(feature.properties['LATITUD'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">LONGITUD</th>\
+                        <td class="visible-with-data" id="LONGITUD">' + (feature.properties['LONGITUD'] !== null ? autolinker.link(feature.properties['LONGITUD'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            var content = removeEmptyRowsFromPopupContent(popupContent, feature);
+			layer.on('popupopen', function(e) {
+				addClassToPopupIfMedia(content, e.popup);
+			});
+			layer.bindPopup(content, { maxHeight: 400 });
+        }
+
+        function style_Cuauhtmoc_13_0() {
+            return {
+                pane: 'pane_Cuauhtmoc_13',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(224,47,147,1.0)',
+                interactive: true,
+            }
+        }
+        map.createPane('pane_Cuauhtmoc_13');
+        map.getPane('pane_Cuauhtmoc_13').style.zIndex = 413;
+        map.getPane('pane_Cuauhtmoc_13').style['mix-blend-mode'] = 'normal';
+        var layer_Cuauhtmoc_13 = new L.geoJson(json_Cuauhtmoc_13, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_Cuauhtmoc_13',
+            layerName: 'layer_Cuauhtmoc_13',
+            pane: 'pane_Cuauhtmoc_13',
+            onEachFeature: pop_Cuauhtmoc_13,
+            pointToLayer: function (feature, latlng) {
+                var context = {
+                    feature: feature,
+                    variables: {}
+                };
+                return L.circleMarker(latlng, style_Cuauhtmoc_13_0(feature));
+            },
+        });
+        bounds_group.addLayer(layer_Cuauhtmoc_13);
+        function pop_Coyoacn_14(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <th scope="row">PREDIOS</th>\
+                        <td class="visible-with-data" id="PREDIOS">' + (feature.properties['PREDIOS'] !== null ? autolinker.link(feature.properties['PREDIOS'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">ANEXOS</th>\
+                        <td class="visible-with-data" id="ANEXOS">' + (feature.properties['ANEXOS'] !== null ? autolinker.link(feature.properties['ANEXOS'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">DIRECCION</th>\
+                        <td class="visible-with-data" id="DIRECCION">' + (feature.properties['DIRECCION'] !== null ? autolinker.link(feature.properties['DIRECCION'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">ZONA</th>\
+                        <td class="visible-with-data" id="ZONA">' + (feature.properties['ZONA'] !== null ? autolinker.link(feature.properties['ZONA'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">ALCALDIA</th>\
+                        <td class="visible-with-data" id="ALCALDIA">' + (feature.properties['ALCALDIA'] !== null ? autolinker.link(feature.properties['ALCALDIA'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">COORDINADOR DE SUB COMITÉ DE PROTECCION CIVIL (CHALECO AMARILLO)</th>\
+                        <td class="visible-with-data" id="COORDINADOR DE SUB COMITÉ DE PROTECCION CIVIL (CHALECO AMARILLO)">' + (feature.properties['COORDINADOR DE SUB COMITÉ DE PROTECCION CIVIL (CHALECO AMARILLO)'] !== null ? autolinker.link(feature.properties['COORDINADOR DE SUB COMITÉ DE PROTECCION CIVIL (CHALECO AMARILLO)'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">BRIGADISTAS DE PRIMEROS AUXILIOS (CHALECO BLANCO)</th>\
+                        <td class="visible-with-data" id="BRIGADISTAS DE PRIMEROS AUXILIOS (CHALECO BLANCO)">' + (feature.properties['BRIGADISTAS DE PRIMEROS AUXILIOS (CHALECO BLANCO)'] !== null ? autolinker.link(feature.properties['BRIGADISTAS DE PRIMEROS AUXILIOS (CHALECO BLANCO)'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">BRIGADISTA DE PREVENCION Y COMBATE DE INCENDIOS (CHALECO ROJO)</th>\
+                        <td class="visible-with-data" id="BRIGADISTA DE PREVENCION Y COMBATE DE INCENDIOS (CHALECO ROJO)">' + (feature.properties['BRIGADISTA DE PREVENCION Y COMBATE DE INCENDIOS (CHALECO ROJO)'] !== null ? autolinker.link(feature.properties['BRIGADISTA DE PREVENCION Y COMBATE DE INCENDIOS (CHALECO ROJO)'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">BRIGADISTA DE EVACUACIÓN Y REPLIEGUE (CHALECO ANARANJADO)</th>\
+                        <td class="visible-with-data" id="BRIGADISTA DE EVACUACIÓN Y REPLIEGUE (CHALECO ANARANJADO)">' + (feature.properties['BRIGADISTA DE EVACUACIÓN Y REPLIEGUE (CHALECO ANARANJADO)'] !== null ? autolinker.link(feature.properties['BRIGADISTA DE EVACUACIÓN Y REPLIEGUE (CHALECO ANARANJADO)'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">BRIGADISTA DE COMUNICACIÓN (CHALECO VERDE)</th>\
+                        <td class="visible-with-data" id="BRIGADISTA DE COMUNICACIÓN (CHALECO VERDE)">' + (feature.properties['BRIGADISTA DE COMUNICACIÓN (CHALECO VERDE)'] !== null ? autolinker.link(feature.properties['BRIGADISTA DE COMUNICACIÓN (CHALECO VERDE)'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">BRIGADISTA DE APOYO PSICOSOCIAL (AZUL CLARO)</th>\
+                        <td class="visible-with-data" id="BRIGADISTA DE APOYO PSICOSOCIAL (AZUL CLARO)">' + (feature.properties['BRIGADISTA DE APOYO PSICOSOCIAL (AZUL CLARO)'] !== null ? autolinker.link(feature.properties['BRIGADISTA DE APOYO PSICOSOCIAL (AZUL CLARO)'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">TOTAL DE BRIGADISTAS</th>\
+                        <td class="visible-with-data" id="TOTAL DE BRIGADISTAS">' + (feature.properties['TOTAL DE BRIGADISTAS'] !== null ? autolinker.link(feature.properties['TOTAL DE BRIGADISTAS'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">NUMERO DE PERSONAS SERVIDORAS PUBLICAS APROXIMADAS QUE LABORAN EN EL INMUEBLE 2024</th>\
+                        <td class="visible-with-data" id="NUMERO DE PERSONAS SERVIDORAS PUBLICAS APROXIMADAS QUE LABORAN EN EL INMUEBLE 2024">' + (feature.properties['NUMERO DE PERSONAS SERVIDORAS PUBLICAS APROXIMADAS QUE LABORAN EN EL INMUEBLE 2024'] !== null ? autolinker.link(feature.properties['NUMERO DE PERSONAS SERVIDORAS PUBLICAS APROXIMADAS QUE LABORAN EN EL INMUEBLE 2024'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">BRIGADISTAS DEBER SER</th>\
+                        <td class="visible-with-data" id="BRIGADISTAS DEBER SER">' + (feature.properties['BRIGADISTAS DEBER SER'] !== null ? autolinker.link(feature.properties['BRIGADISTAS DEBER SER'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">PROGRAMA INTERNO Y PLAN DE EVACUACION</th>\
+                        <td class="visible-with-data" id="PROGRAMA INTERNO Y PLAN DE EVACUACION">' + (feature.properties['PROGRAMA INTERNO Y PLAN DE EVACUACION'] !== null ? autolinker.link(feature.properties['PROGRAMA INTERNO Y PLAN DE EVACUACION'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">METROS DE CONSTRUCCION (m2)</th>\
+                        <td class="visible-with-data" id="METROS DE CONSTRUCCION (m2)">' + (feature.properties['METROS DE CONSTRUCCION (m2)'] !== null ? autolinker.link(feature.properties['METROS DE CONSTRUCCION (m2)'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">DIAMETRO DE ESTUDIO</th>\
+                        <td class="visible-with-data" id="DIAMETRO DE ESTUDIO">' + (feature.properties['DIAMETRO DE ESTUDIO'] !== null ? autolinker.link(feature.properties['DIAMETRO DE ESTUDIO'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">ZONAS DE ACUERDO CON EL REGLAMENTO DE CONSTRUCCIONES PARA EL DISTRITO FEDERAL</th>\
+                        <td class="visible-with-data" id="ZONAS DE ACUERDO CON EL REGLAMENTO DE CONSTRUCCIONES PARA EL DISTRITO FEDERAL">' + (feature.properties['ZONAS DE ACUERDO CON EL REGLAMENTO DE CONSTRUCCIONES PARA EL DISTRITO FEDERAL'] !== null ? autolinker.link(feature.properties['ZONAS DE ACUERDO CON EL REGLAMENTO DE CONSTRUCCIONES PARA EL DISTRITO FEDERAL'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">GRADO DE RIESGO DE INCENDIO NOM-002-STPS-2010</th>\
+                        <td class="visible-with-data" id="GRADO DE RIESGO DE INCENDIO NOM-002-STPS-2010">' + (feature.properties['GRADO DE RIESGO DE INCENDIO NOM-002-STPS-2010'] !== null ? autolinker.link(feature.properties['GRADO DE RIESGO DE INCENDIO NOM-002-STPS-2010'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">LATITUD</th>\
+                        <td class="visible-with-data" id="LATITUD">' + (feature.properties['LATITUD'] !== null ? autolinker.link(feature.properties['LATITUD'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">LONGITUD</th>\
+                        <td class="visible-with-data" id="LONGITUD">' + (feature.properties['LONGITUD'] !== null ? autolinker.link(feature.properties['LONGITUD'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            var content = removeEmptyRowsFromPopupContent(popupContent, feature);
+			layer.on('popupopen', function(e) {
+				addClassToPopupIfMedia(content, e.popup);
+			});
+			layer.bindPopup(content, { maxHeight: 400 });
+        }
+
+        function style_Coyoacn_14_0() {
+            return {
+                pane: 'pane_Coyoacn_14',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(152,125,183,1.0)',
+                interactive: true,
+            }
+        }
+        map.createPane('pane_Coyoacn_14');
+        map.getPane('pane_Coyoacn_14').style.zIndex = 414;
+        map.getPane('pane_Coyoacn_14').style['mix-blend-mode'] = 'normal';
+        var layer_Coyoacn_14 = new L.geoJson(json_Coyoacn_14, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_Coyoacn_14',
+            layerName: 'layer_Coyoacn_14',
+            pane: 'pane_Coyoacn_14',
+            onEachFeature: pop_Coyoacn_14,
+            pointToLayer: function (feature, latlng) {
+                var context = {
+                    feature: feature,
+                    variables: {}
+                };
+                return L.circleMarker(latlng, style_Coyoacn_14_0(feature));
+            },
+        });
+        bounds_group.addLayer(layer_Coyoacn_14);
+        function pop_Cuajimalpa_15(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <th scope="row">PREDIOS</th>\
+                        <td class="visible-with-data" id="PREDIOS">' + (feature.properties['PREDIOS'] !== null ? autolinker.link(feature.properties['PREDIOS'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">ANEXOS</th>\
+                        <td class="visible-with-data" id="ANEXOS">' + (feature.properties['ANEXOS'] !== null ? autolinker.link(feature.properties['ANEXOS'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">DIRECCION</th>\
+                        <td class="visible-with-data" id="DIRECCION">' + (feature.properties['DIRECCION'] !== null ? autolinker.link(feature.properties['DIRECCION'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">ZONA</th>\
+                        <td class="visible-with-data" id="ZONA">' + (feature.properties['ZONA'] !== null ? autolinker.link(feature.properties['ZONA'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">ALCALDIA</th>\
+                        <td class="visible-with-data" id="ALCALDIA">' + (feature.properties['ALCALDIA'] !== null ? autolinker.link(feature.properties['ALCALDIA'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">COORDINADOR DE SUB COMITÉ DE PROTECCION CIVIL (CHALECO AMARILLO)</th>\
+                        <td class="visible-with-data" id="COORDINADOR DE SUB COMITÉ DE PROTECCION CIVIL (CHALECO AMARILLO)">' + (feature.properties['COORDINADOR DE SUB COMITÉ DE PROTECCION CIVIL (CHALECO AMARILLO)'] !== null ? autolinker.link(feature.properties['COORDINADOR DE SUB COMITÉ DE PROTECCION CIVIL (CHALECO AMARILLO)'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">BRIGADISTAS DE PRIMEROS AUXILIOS (CHALECO BLANCO)</th>\
+                        <td class="visible-with-data" id="BRIGADISTAS DE PRIMEROS AUXILIOS (CHALECO BLANCO)">' + (feature.properties['BRIGADISTAS DE PRIMEROS AUXILIOS (CHALECO BLANCO)'] !== null ? autolinker.link(feature.properties['BRIGADISTAS DE PRIMEROS AUXILIOS (CHALECO BLANCO)'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">BRIGADISTA DE PREVENCION Y COMBATE DE INCENDIOS (CHALECO ROJO)</th>\
+                        <td class="visible-with-data" id="BRIGADISTA DE PREVENCION Y COMBATE DE INCENDIOS (CHALECO ROJO)">' + (feature.properties['BRIGADISTA DE PREVENCION Y COMBATE DE INCENDIOS (CHALECO ROJO)'] !== null ? autolinker.link(feature.properties['BRIGADISTA DE PREVENCION Y COMBATE DE INCENDIOS (CHALECO ROJO)'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">BRIGADISTA DE EVACUACIÓN Y REPLIEGUE (CHALECO ANARANJADO)</th>\
+                        <td class="visible-with-data" id="BRIGADISTA DE EVACUACIÓN Y REPLIEGUE (CHALECO ANARANJADO)">' + (feature.properties['BRIGADISTA DE EVACUACIÓN Y REPLIEGUE (CHALECO ANARANJADO)'] !== null ? autolinker.link(feature.properties['BRIGADISTA DE EVACUACIÓN Y REPLIEGUE (CHALECO ANARANJADO)'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">BRIGADISTA DE COMUNICACIÓN (CHALECO VERDE)</th>\
+                        <td class="visible-with-data" id="BRIGADISTA DE COMUNICACIÓN (CHALECO VERDE)">' + (feature.properties['BRIGADISTA DE COMUNICACIÓN (CHALECO VERDE)'] !== null ? autolinker.link(feature.properties['BRIGADISTA DE COMUNICACIÓN (CHALECO VERDE)'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">BRIGADISTA DE APOYO PSICOSOCIAL (AZUL CLARO)</th>\
+                        <td class="visible-with-data" id="BRIGADISTA DE APOYO PSICOSOCIAL (AZUL CLARO)">' + (feature.properties['BRIGADISTA DE APOYO PSICOSOCIAL (AZUL CLARO)'] !== null ? autolinker.link(feature.properties['BRIGADISTA DE APOYO PSICOSOCIAL (AZUL CLARO)'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">BRIGADISTA MULTIFUNCIONAL CHALECO (NARANJA Y AZUL)</th>\
+                        <td class="visible-with-data" id="BRIGADISTA MULTIFUNCIONAL CHALECO (NARANJA Y AZUL)">' + (feature.properties['BRIGADISTA MULTIFUNCIONAL CHALECO (NARANJA Y AZUL)'] !== null ? autolinker.link(feature.properties['BRIGADISTA MULTIFUNCIONAL CHALECO (NARANJA Y AZUL)'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">TOTAL DE BRIGADISTAS</th>\
+                        <td class="visible-with-data" id="TOTAL DE BRIGADISTAS">' + (feature.properties['TOTAL DE BRIGADISTAS'] !== null ? autolinker.link(feature.properties['TOTAL DE BRIGADISTAS'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">NUMERO DE PERSONAS SERVIDORAS PUBLICAS APROXIMADAS QUE LABORAN EN EL INMUEBLE 2024</th>\
+                        <td class="visible-with-data" id="NUMERO DE PERSONAS SERVIDORAS PUBLICAS APROXIMADAS QUE LABORAN EN EL INMUEBLE 2024">' + (feature.properties['NUMERO DE PERSONAS SERVIDORAS PUBLICAS APROXIMADAS QUE LABORAN EN EL INMUEBLE 2024'] !== null ? autolinker.link(feature.properties['NUMERO DE PERSONAS SERVIDORAS PUBLICAS APROXIMADAS QUE LABORAN EN EL INMUEBLE 2024'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">BRIGADISTAS DEBER SER</th>\
+                        <td class="visible-with-data" id="BRIGADISTAS DEBER SER">' + (feature.properties['BRIGADISTAS DEBER SER'] !== null ? autolinker.link(feature.properties['BRIGADISTAS DEBER SER'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">PROGRAMA INTERNO Y PLAN DE EVACUACION</th>\
+                        <td class="visible-with-data" id="PROGRAMA INTERNO Y PLAN DE EVACUACION">' + (feature.properties['PROGRAMA INTERNO Y PLAN DE EVACUACION'] !== null ? autolinker.link(feature.properties['PROGRAMA INTERNO Y PLAN DE EVACUACION'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">METROS DE CONSTRUCCION (m2)</th>\
+                        <td class="visible-with-data" id="METROS DE CONSTRUCCION (m2)">' + (feature.properties['METROS DE CONSTRUCCION (m2)'] !== null ? autolinker.link(feature.properties['METROS DE CONSTRUCCION (m2)'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">DIAMETRO DE ESTUDIO</th>\
+                        <td class="visible-with-data" id="DIAMETRO DE ESTUDIO">' + (feature.properties['DIAMETRO DE ESTUDIO'] !== null ? autolinker.link(feature.properties['DIAMETRO DE ESTUDIO'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">ZONAS DE ACUERDO CON EL REGLAMENTO DE CONSTRUCCIONES PARA EL DISTRITO FEDERAL</th>\
+                        <td class="visible-with-data" id="ZONAS DE ACUERDO CON EL REGLAMENTO DE CONSTRUCCIONES PARA EL DISTRITO FEDERAL">' + (feature.properties['ZONAS DE ACUERDO CON EL REGLAMENTO DE CONSTRUCCIONES PARA EL DISTRITO FEDERAL'] !== null ? autolinker.link(feature.properties['ZONAS DE ACUERDO CON EL REGLAMENTO DE CONSTRUCCIONES PARA EL DISTRITO FEDERAL'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">GRADO DE RIESGO DE INCENDIO NOM-002-STPS-2010</th>\
+                        <td class="visible-with-data" id="GRADO DE RIESGO DE INCENDIO NOM-002-STPS-2010">' + (feature.properties['GRADO DE RIESGO DE INCENDIO NOM-002-STPS-2010'] !== null ? autolinker.link(feature.properties['GRADO DE RIESGO DE INCENDIO NOM-002-STPS-2010'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">LATITUD</th>\
+                        <td class="visible-with-data" id="LATITUD">' + (feature.properties['LATITUD'] !== null ? autolinker.link(feature.properties['LATITUD'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">LONGITUD</th>\
+                        <td class="visible-with-data" id="LONGITUD">' + (feature.properties['LONGITUD'] !== null ? autolinker.link(feature.properties['LONGITUD'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            var content = removeEmptyRowsFromPopupContent(popupContent, feature);
+			layer.on('popupopen', function(e) {
+				addClassToPopupIfMedia(content, e.popup);
+			});
+			layer.bindPopup(content, { maxHeight: 400 });
+        }
+
+        function style_Cuajimalpa_15_0() {
+            return {
+                pane: 'pane_Cuajimalpa_15',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(152,125,183,1.0)',
+                interactive: true,
+            }
+        }
+        map.createPane('pane_Cuajimalpa_15');
+        map.getPane('pane_Cuajimalpa_15').style.zIndex = 415;
+        map.getPane('pane_Cuajimalpa_15').style['mix-blend-mode'] = 'normal';
+        var layer_Cuajimalpa_15 = new L.geoJson(json_Cuajimalpa_15, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_Cuajimalpa_15',
+            layerName: 'layer_Cuajimalpa_15',
+            pane: 'pane_Cuajimalpa_15',
+            onEachFeature: pop_Cuajimalpa_15,
+            pointToLayer: function (feature, latlng) {
+                var context = {
+                    feature: feature,
+                    variables: {}
+                };
+                return L.circleMarker(latlng, style_Cuajimalpa_15_0(feature));
+            },
+        });
+        bounds_group.addLayer(layer_Cuajimalpa_15);
+        function pop_BenitoJurez_16(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <th scope="row">PREDIOS</th>\
+                        <td class="visible-with-data" id="PREDIOS">' + (feature.properties['PREDIOS'] !== null ? autolinker.link(feature.properties['PREDIOS'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">ANEXOS</th>\
+                        <td class="visible-with-data" id="ANEXOS">' + (feature.properties['ANEXOS'] !== null ? autolinker.link(feature.properties['ANEXOS'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">DIRECCION</th>\
+                        <td class="visible-with-data" id="DIRECCION">' + (feature.properties['DIRECCION'] !== null ? autolinker.link(feature.properties['DIRECCION'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">ZONA</th>\
+                        <td class="visible-with-data" id="ZONA">' + (feature.properties['ZONA'] !== null ? autolinker.link(feature.properties['ZONA'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">ALCALDIA</th>\
+                        <td class="visible-with-data" id="ALCALDIA">' + (feature.properties['ALCALDIA'] !== null ? autolinker.link(feature.properties['ALCALDIA'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">COORDINADOR DE SUB COMITÉ DE PROTECCION CIVIL (CHALECO AMARILLO)</th>\
+                        <td class="visible-with-data" id="COORDINADOR DE SUB COMITÉ DE PROTECCION CIVIL (CHALECO AMARILLO)">' + (feature.properties['COORDINADOR DE SUB COMITÉ DE PROTECCION CIVIL (CHALECO AMARILLO)'] !== null ? autolinker.link(feature.properties['COORDINADOR DE SUB COMITÉ DE PROTECCION CIVIL (CHALECO AMARILLO)'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">BRIGADISTAS DE PRIMEROS AUXILIOS (CHALECO BLANCO)</th>\
+                        <td class="visible-with-data" id="BRIGADISTAS DE PRIMEROS AUXILIOS (CHALECO BLANCO)">' + (feature.properties['BRIGADISTAS DE PRIMEROS AUXILIOS (CHALECO BLANCO)'] !== null ? autolinker.link(feature.properties['BRIGADISTAS DE PRIMEROS AUXILIOS (CHALECO BLANCO)'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">BRIGADISTA DE PREVENCION Y COMBATE DE INCENDIOS (CHALECO ROJO)</th>\
+                        <td class="visible-with-data" id="BRIGADISTA DE PREVENCION Y COMBATE DE INCENDIOS (CHALECO ROJO)">' + (feature.properties['BRIGADISTA DE PREVENCION Y COMBATE DE INCENDIOS (CHALECO ROJO)'] !== null ? autolinker.link(feature.properties['BRIGADISTA DE PREVENCION Y COMBATE DE INCENDIOS (CHALECO ROJO)'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">BRIGADISTA DE EVACUACIÓN Y REPLIEGUE (CHALECO ANARANJADO)</th>\
+                        <td class="visible-with-data" id="BRIGADISTA DE EVACUACIÓN Y REPLIEGUE (CHALECO ANARANJADO)">' + (feature.properties['BRIGADISTA DE EVACUACIÓN Y REPLIEGUE (CHALECO ANARANJADO)'] !== null ? autolinker.link(feature.properties['BRIGADISTA DE EVACUACIÓN Y REPLIEGUE (CHALECO ANARANJADO)'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">BRIGADISTA DE COMUNICACIÓN (CHALECO VERDE)</th>\
+                        <td class="visible-with-data" id="BRIGADISTA DE COMUNICACIÓN (CHALECO VERDE)">' + (feature.properties['BRIGADISTA DE COMUNICACIÓN (CHALECO VERDE)'] !== null ? autolinker.link(feature.properties['BRIGADISTA DE COMUNICACIÓN (CHALECO VERDE)'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">BRIGADISTA DE APOYO PSICOSOCIAL (AZUL CLARO)</th>\
+                        <td class="visible-with-data" id="BRIGADISTA DE APOYO PSICOSOCIAL (AZUL CLARO)">' + (feature.properties['BRIGADISTA DE APOYO PSICOSOCIAL (AZUL CLARO)'] !== null ? autolinker.link(feature.properties['BRIGADISTA DE APOYO PSICOSOCIAL (AZUL CLARO)'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">BRIGADISTA MULTIFUNCIONAL CHALECO (NARANJA Y AZUL)</th>\
+                        <td class="visible-with-data" id="BRIGADISTA MULTIFUNCIONAL CHALECO (NARANJA Y AZUL)">' + (feature.properties['BRIGADISTA MULTIFUNCIONAL CHALECO (NARANJA Y AZUL)'] !== null ? autolinker.link(feature.properties['BRIGADISTA MULTIFUNCIONAL CHALECO (NARANJA Y AZUL)'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">TOTAL DE BRIGADISTAS</th>\
+                        <td class="visible-with-data" id="TOTAL DE BRIGADISTAS">' + (feature.properties['TOTAL DE BRIGADISTAS'] !== null ? autolinker.link(feature.properties['TOTAL DE BRIGADISTAS'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">NUMERO DE PERSONAS SERVIDORAS PUBLICAS APROXIMADAS QUE LABORAN EN EL INMUEBLE 2024</th>\
+                        <td class="visible-with-data" id="NUMERO DE PERSONAS SERVIDORAS PUBLICAS APROXIMADAS QUE LABORAN EN EL INMUEBLE 2024">' + (feature.properties['NUMERO DE PERSONAS SERVIDORAS PUBLICAS APROXIMADAS QUE LABORAN EN EL INMUEBLE 2024'] !== null ? autolinker.link(feature.properties['NUMERO DE PERSONAS SERVIDORAS PUBLICAS APROXIMADAS QUE LABORAN EN EL INMUEBLE 2024'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">BRIGADISTAS DEBER SER</th>\
+                        <td class="visible-with-data" id="BRIGADISTAS DEBER SER">' + (feature.properties['BRIGADISTAS DEBER SER'] !== null ? autolinker.link(feature.properties['BRIGADISTAS DEBER SER'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">PROGRAMA INTERNO Y PLAN DE EVACUACION</th>\
+                        <td class="visible-with-data" id="PROGRAMA INTERNO Y PLAN DE EVACUACION">' + (feature.properties['PROGRAMA INTERNO Y PLAN DE EVACUACION'] !== null ? autolinker.link(feature.properties['PROGRAMA INTERNO Y PLAN DE EVACUACION'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">METROS DE CONSTRUCCION (m2)</th>\
+                        <td class="visible-with-data" id="METROS DE CONSTRUCCION (m2)">' + (feature.properties['METROS DE CONSTRUCCION (m2)'] !== null ? autolinker.link(feature.properties['METROS DE CONSTRUCCION (m2)'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">DIAMETRO DE ESTUDIO</th>\
+                        <td class="visible-with-data" id="DIAMETRO DE ESTUDIO">' + (feature.properties['DIAMETRO DE ESTUDIO'] !== null ? autolinker.link(feature.properties['DIAMETRO DE ESTUDIO'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">ZONAS DE ACUERDO CON EL REGLAMENTO DE CONSTRUCCIONES PARA EL DISTRITO FEDERAL</th>\
+                        <td class="visible-with-data" id="ZONAS DE ACUERDO CON EL REGLAMENTO DE CONSTRUCCIONES PARA EL DISTRITO FEDERAL">' + (feature.properties['ZONAS DE ACUERDO CON EL REGLAMENTO DE CONSTRUCCIONES PARA EL DISTRITO FEDERAL'] !== null ? autolinker.link(feature.properties['ZONAS DE ACUERDO CON EL REGLAMENTO DE CONSTRUCCIONES PARA EL DISTRITO FEDERAL'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">GRADO DE RIESGO DE INCENDIO NOM-002-STPS-2010</th>\
+                        <td class="visible-with-data" id="GRADO DE RIESGO DE INCENDIO NOM-002-STPS-2010">' + (feature.properties['GRADO DE RIESGO DE INCENDIO NOM-002-STPS-2010'] !== null ? autolinker.link(feature.properties['GRADO DE RIESGO DE INCENDIO NOM-002-STPS-2010'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">LATITUD</th>\
+                        <td class="visible-with-data" id="LATITUD">' + (feature.properties['LATITUD'] !== null ? autolinker.link(feature.properties['LATITUD'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">LONGITUD</th>\
+                        <td class="visible-with-data" id="LONGITUD">' + (feature.properties['LONGITUD'] !== null ? autolinker.link(feature.properties['LONGITUD'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            var content = removeEmptyRowsFromPopupContent(popupContent, feature);
+			layer.on('popupopen', function(e) {
+				addClassToPopupIfMedia(content, e.popup);
+			});
+			layer.bindPopup(content, { maxHeight: 400 });
+        }
+
+        function style_BenitoJurez_16_0() {
+            return {
+                pane: 'pane_BenitoJurez_16',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(42,219,151,1.0)',
+                interactive: true,
+            }
+        }
+        map.createPane('pane_BenitoJurez_16');
+        map.getPane('pane_BenitoJurez_16').style.zIndex = 416;
+        map.getPane('pane_BenitoJurez_16').style['mix-blend-mode'] = 'normal';
+        var layer_BenitoJurez_16 = new L.geoJson(json_BenitoJurez_16, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_BenitoJurez_16',
+            layerName: 'layer_BenitoJurez_16',
+            pane: 'pane_BenitoJurez_16',
+            onEachFeature: pop_BenitoJurez_16,
+            pointToLayer: function (feature, latlng) {
+                var context = {
+                    feature: feature,
+                    variables: {}
+                };
+                return L.circleMarker(latlng, style_BenitoJurez_16_0(feature));
+            },
+        });
+        bounds_group.addLayer(layer_BenitoJurez_16);
+        function pop_Azcapotzalco_17(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <th scope="row">PREDIOS</th>\
+                        <td class="visible-with-data" id="PREDIOS">' + (feature.properties['PREDIOS'] !== null ? autolinker.link(feature.properties['PREDIOS'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">ANEXOS</th>\
+                        <td class="visible-with-data" id="ANEXOS">' + (feature.properties['ANEXOS'] !== null ? autolinker.link(feature.properties['ANEXOS'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">DIRECCION</th>\
+                        <td class="visible-with-data" id="DIRECCION">' + (feature.properties['DIRECCION'] !== null ? autolinker.link(feature.properties['DIRECCION'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">ZONA</th>\
+                        <td class="visible-with-data" id="ZONA">' + (feature.properties['ZONA'] !== null ? autolinker.link(feature.properties['ZONA'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">ALCALDIA</th>\
+                        <td class="visible-with-data" id="ALCALDIA">' + (feature.properties['ALCALDIA'] !== null ? autolinker.link(feature.properties['ALCALDIA'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">COORDINADOR DE SUB COMITÉ DE PROTECCION CIVIL (CHALECO AMARILLO)</th>\
+                        <td class="visible-with-data" id="COORDINADOR DE SUB COMITÉ DE PROTECCION CIVIL (CHALECO AMARILLO)">' + (feature.properties['COORDINADOR DE SUB COMITÉ DE PROTECCION CIVIL (CHALECO AMARILLO)'] !== null ? autolinker.link(feature.properties['COORDINADOR DE SUB COMITÉ DE PROTECCION CIVIL (CHALECO AMARILLO)'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">BRIGADISTAS DE PRIMEROS AUXILIOS (CHALECO BLANCO)</th>\
+                        <td class="visible-with-data" id="BRIGADISTAS DE PRIMEROS AUXILIOS (CHALECO BLANCO)">' + (feature.properties['BRIGADISTAS DE PRIMEROS AUXILIOS (CHALECO BLANCO)'] !== null ? autolinker.link(feature.properties['BRIGADISTAS DE PRIMEROS AUXILIOS (CHALECO BLANCO)'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">BRIGADISTA DE PREVENCION Y COMBATE DE INCENDIOS (CHALECO ROJO)</th>\
+                        <td class="visible-with-data" id="BRIGADISTA DE PREVENCION Y COMBATE DE INCENDIOS (CHALECO ROJO)">' + (feature.properties['BRIGADISTA DE PREVENCION Y COMBATE DE INCENDIOS (CHALECO ROJO)'] !== null ? autolinker.link(feature.properties['BRIGADISTA DE PREVENCION Y COMBATE DE INCENDIOS (CHALECO ROJO)'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">BRIGADISTA DE EVACUACIÓN Y REPLIEGUE (CHALECO ANARANJADO)</th>\
+                        <td class="visible-with-data" id="BRIGADISTA DE EVACUACIÓN Y REPLIEGUE (CHALECO ANARANJADO)">' + (feature.properties['BRIGADISTA DE EVACUACIÓN Y REPLIEGUE (CHALECO ANARANJADO)'] !== null ? autolinker.link(feature.properties['BRIGADISTA DE EVACUACIÓN Y REPLIEGUE (CHALECO ANARANJADO)'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">BRIGADISTA DE COMUNICACIÓN (CHALECO VERDE)</th>\
+                        <td class="visible-with-data" id="BRIGADISTA DE COMUNICACIÓN (CHALECO VERDE)">' + (feature.properties['BRIGADISTA DE COMUNICACIÓN (CHALECO VERDE)'] !== null ? autolinker.link(feature.properties['BRIGADISTA DE COMUNICACIÓN (CHALECO VERDE)'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">BRIGADISTA DE APOYO PSICOSOCIAL (AZUL CLARO)</th>\
+                        <td class="visible-with-data" id="BRIGADISTA DE APOYO PSICOSOCIAL (AZUL CLARO)">' + (feature.properties['BRIGADISTA DE APOYO PSICOSOCIAL (AZUL CLARO)'] !== null ? autolinker.link(feature.properties['BRIGADISTA DE APOYO PSICOSOCIAL (AZUL CLARO)'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">BRIGADISTA MULTIFUNCIONAL CHALECO (NARANJA Y AZUL)</th>\
+                        <td class="visible-with-data" id="BRIGADISTA MULTIFUNCIONAL CHALECO (NARANJA Y AZUL)">' + (feature.properties['BRIGADISTA MULTIFUNCIONAL CHALECO (NARANJA Y AZUL)'] !== null ? autolinker.link(feature.properties['BRIGADISTA MULTIFUNCIONAL CHALECO (NARANJA Y AZUL)'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">TOTAL DE BRIGADISTAS</th>\
+                        <td class="visible-with-data" id="TOTAL DE BRIGADISTAS">' + (feature.properties['TOTAL DE BRIGADISTAS'] !== null ? autolinker.link(feature.properties['TOTAL DE BRIGADISTAS'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">NUMERO DE PERSONAS SERVIDORAS PUBLICAS APROXIMADAS QUE LABORAN EN EL INMUEBLE 2024</th>\
+                        <td class="visible-with-data" id="NUMERO DE PERSONAS SERVIDORAS PUBLICAS APROXIMADAS QUE LABORAN EN EL INMUEBLE 2024">' + (feature.properties['NUMERO DE PERSONAS SERVIDORAS PUBLICAS APROXIMADAS QUE LABORAN EN EL INMUEBLE 2024'] !== null ? autolinker.link(feature.properties['NUMERO DE PERSONAS SERVIDORAS PUBLICAS APROXIMADAS QUE LABORAN EN EL INMUEBLE 2024'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">BRIGADISTAS DEBER SER</th>\
+                        <td class="visible-with-data" id="BRIGADISTAS DEBER SER">' + (feature.properties['BRIGADISTAS DEBER SER'] !== null ? autolinker.link(feature.properties['BRIGADISTAS DEBER SER'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">PROGRAMA INTERNO Y PLAN DE EVACUACION</th>\
+                        <td>' + (feature.properties['PROGRAMA INTERNO Y PLAN DE EVACUACION'] !== null ? autolinker.link(feature.properties['PROGRAMA INTERNO Y PLAN DE EVACUACION'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">METROS DE CONSTRUCCION (m2)</th>\
+                        <td class="visible-with-data" id="METROS DE CONSTRUCCION (m2)">' + (feature.properties['METROS DE CONSTRUCCION (m2)'] !== null ? autolinker.link(feature.properties['METROS DE CONSTRUCCION (m2)'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">DIAMETRO DE ESTUDIO</th>\
+                        <td class="visible-with-data" id="DIAMETRO DE ESTUDIO">' + (feature.properties['DIAMETRO DE ESTUDIO'] !== null ? autolinker.link(feature.properties['DIAMETRO DE ESTUDIO'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">ZONAS DE ACUERDO CON EL REGLAMENTO DE CONSTRUCCIONES PARA EL DISTRITO FEDERAL</th>\
+                        <td class="visible-with-data" id="ZONAS DE ACUERDO CON EL REGLAMENTO DE CONSTRUCCIONES PARA EL DISTRITO FEDERAL">' + (feature.properties['ZONAS DE ACUERDO CON EL REGLAMENTO DE CONSTRUCCIONES PARA EL DISTRITO FEDERAL'] !== null ? autolinker.link(feature.properties['ZONAS DE ACUERDO CON EL REGLAMENTO DE CONSTRUCCIONES PARA EL DISTRITO FEDERAL'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">GRADO DE RIESGO DE INCENDIO NOM-002-STPS-2010</th>\
+                        <td class="visible-with-data" id="GRADO DE RIESGO DE INCENDIO NOM-002-STPS-2010">' + (feature.properties['GRADO DE RIESGO DE INCENDIO NOM-002-STPS-2010'] !== null ? autolinker.link(feature.properties['GRADO DE RIESGO DE INCENDIO NOM-002-STPS-2010'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">LATITUD</th>\
+                        <td class="visible-with-data" id="LATITUD">' + (feature.properties['LATITUD'] !== null ? autolinker.link(feature.properties['LATITUD'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">LONGITUD</th>\
+                        <td class="visible-with-data" id="LONGITUD">' + (feature.properties['LONGITUD'] !== null ? autolinker.link(feature.properties['LONGITUD'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            var content = removeEmptyRowsFromPopupContent(popupContent, feature);
+			layer.on('popupopen', function(e) {
+				addClassToPopupIfMedia(content, e.popup);
+			});
+			layer.bindPopup(content, { maxHeight: 400 });
+        }
+
+        function style_Azcapotzalco_17_0() {
+            return {
+                pane: 'pane_Azcapotzalco_17',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(236,133,227,1.0)',
+                interactive: true,
+            }
+        }
+        map.createPane('pane_Azcapotzalco_17');
+        map.getPane('pane_Azcapotzalco_17').style.zIndex = 417;
+        map.getPane('pane_Azcapotzalco_17').style['mix-blend-mode'] = 'normal';
+        var layer_Azcapotzalco_17 = new L.geoJson(json_Azcapotzalco_17, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_Azcapotzalco_17',
+            layerName: 'layer_Azcapotzalco_17',
+            pane: 'pane_Azcapotzalco_17',
+            onEachFeature: pop_Azcapotzalco_17,
+            pointToLayer: function (feature, latlng) {
+                var context = {
+                    feature: feature,
+                    variables: {}
+                };
+                return L.circleMarker(latlng, style_Azcapotzalco_17_0(feature));
+            },
+        });
+        bounds_group.addLayer(layer_Azcapotzalco_17);
+        function pop_lvaroObregn_18(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <th scope="row">PREDIOS</th>\
+                        <td class="visible-with-data" id="PREDIOS">' + (feature.properties['PREDIOS'] !== null ? autolinker.link(feature.properties['PREDIOS'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">ANEXOS</th>\
+                        <td class="visible-with-data" id="ANEXOS">' + (feature.properties['ANEXOS'] !== null ? autolinker.link(feature.properties['ANEXOS'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">DIRECCION</th>\
+                        <td class="visible-with-data" id="DIRECCION">' + (feature.properties['DIRECCION'] !== null ? autolinker.link(feature.properties['DIRECCION'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">ZONA</th>\
+                        <td class="visible-with-data" id="ZONA">' + (feature.properties['ZONA'] !== null ? autolinker.link(feature.properties['ZONA'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">ALCALDIA</th>\
+                        <td class="visible-with-data" id="ALCALDIA">' + (feature.properties['ALCALDIA'] !== null ? autolinker.link(feature.properties['ALCALDIA'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">COORDINADOR DE SUB COMITÉ DE PROTECCION CIVIL (CHALECO AMARILLO)</th>\
+                        <td class="visible-with-data" id="COORDINADOR DE SUB COMITÉ DE PROTECCION CIVIL (CHALECO AMARILLO)">' + (feature.properties['COORDINADOR DE SUB COMITÉ DE PROTECCION CIVIL (CHALECO AMARILLO)'] !== null ? autolinker.link(feature.properties['COORDINADOR DE SUB COMITÉ DE PROTECCION CIVIL (CHALECO AMARILLO)'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">BRIGADISTAS DE PRIMEROS AUXILIOS (CHALECO BLANCO)</th>\
+                        <td class="visible-with-data" id="BRIGADISTAS DE PRIMEROS AUXILIOS (CHALECO BLANCO)">' + (feature.properties['BRIGADISTAS DE PRIMEROS AUXILIOS (CHALECO BLANCO)'] !== null ? autolinker.link(feature.properties['BRIGADISTAS DE PRIMEROS AUXILIOS (CHALECO BLANCO)'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">BRIGADISTA DE PREVENCION Y COMBATE DE INCENDIOS (CHALECO ROJO)</th>\
+                        <td class="visible-with-data" id="BRIGADISTA DE PREVENCION Y COMBATE DE INCENDIOS (CHALECO ROJO)">' + (feature.properties['BRIGADISTA DE PREVENCION Y COMBATE DE INCENDIOS (CHALECO ROJO)'] !== null ? autolinker.link(feature.properties['BRIGADISTA DE PREVENCION Y COMBATE DE INCENDIOS (CHALECO ROJO)'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">BRIGADISTA DE EVACUACIÓN Y REPLIEGUE (CHALECO ANARANJADO)</th>\
+                        <td class="visible-with-data" id="BRIGADISTA DE EVACUACIÓN Y REPLIEGUE (CHALECO ANARANJADO)">' + (feature.properties['BRIGADISTA DE EVACUACIÓN Y REPLIEGUE (CHALECO ANARANJADO)'] !== null ? autolinker.link(feature.properties['BRIGADISTA DE EVACUACIÓN Y REPLIEGUE (CHALECO ANARANJADO)'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">BRIGADISTA DE COMUNICACIÓN (CHALECO VERDE)</th>\
+                        <td class="visible-with-data" id="BRIGADISTA DE COMUNICACIÓN (CHALECO VERDE)">' + (feature.properties['BRIGADISTA DE COMUNICACIÓN (CHALECO VERDE)'] !== null ? autolinker.link(feature.properties['BRIGADISTA DE COMUNICACIÓN (CHALECO VERDE)'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">BRIGADISTA DE APOYO PSICOSOCIAL (AZUL CLARO)</th>\
+                        <td class="visible-with-data" id="BRIGADISTA DE APOYO PSICOSOCIAL (AZUL CLARO)">' + (feature.properties['BRIGADISTA DE APOYO PSICOSOCIAL (AZUL CLARO)'] !== null ? autolinker.link(feature.properties['BRIGADISTA DE APOYO PSICOSOCIAL (AZUL CLARO)'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">BRIGADISTA MULTIFUNCIONAL CHALECO (NARANJA Y AZUL)</th>\
+                        <td class="visible-with-data" id="BRIGADISTA MULTIFUNCIONAL CHALECO (NARANJA Y AZUL)">' + (feature.properties['BRIGADISTA MULTIFUNCIONAL CHALECO (NARANJA Y AZUL)'] !== null ? autolinker.link(feature.properties['BRIGADISTA MULTIFUNCIONAL CHALECO (NARANJA Y AZUL)'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">TOTAL DE BRIGADISTAS</th>\
+                        <td class="visible-with-data" id="TOTAL DE BRIGADISTAS">' + (feature.properties['TOTAL DE BRIGADISTAS'] !== null ? autolinker.link(feature.properties['TOTAL DE BRIGADISTAS'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">NUMERO DE PERSONAS SERVIDORAS PUBLICAS APROXIMADAS QUE LABORAN EN EL INMUEBLE 2024</th>\
+                        <td class="visible-with-data" id="NUMERO DE PERSONAS SERVIDORAS PUBLICAS APROXIMADAS QUE LABORAN EN EL INMUEBLE 2024">' + (feature.properties['NUMERO DE PERSONAS SERVIDORAS PUBLICAS APROXIMADAS QUE LABORAN EN EL INMUEBLE 2024'] !== null ? autolinker.link(feature.properties['NUMERO DE PERSONAS SERVIDORAS PUBLICAS APROXIMADAS QUE LABORAN EN EL INMUEBLE 2024'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">BRIGADISTAS DEBER SER</th>\
+                        <td class="visible-with-data" id="BRIGADISTAS DEBER SER">' + (feature.properties['BRIGADISTAS DEBER SER'] !== null ? autolinker.link(feature.properties['BRIGADISTAS DEBER SER'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">PROGRAMA INTERNO Y PLAN DE EVACUACION</th>\
+                        <td class="visible-with-data" id="PROGRAMA INTERNO Y PLAN DE EVACUACION">' + (feature.properties['PROGRAMA INTERNO Y PLAN DE EVACUACION'] !== null ? autolinker.link(feature.properties['PROGRAMA INTERNO Y PLAN DE EVACUACION'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">METROS DE CONSTRUCCION (m2)</th>\
+                        <td class="visible-with-data" id="METROS DE CONSTRUCCION (m2)">' + (feature.properties['METROS DE CONSTRUCCION (m2)'] !== null ? autolinker.link(feature.properties['METROS DE CONSTRUCCION (m2)'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">DIAMETRO DE ESTUDIO</th>\
+                        <td class="visible-with-data" id="DIAMETRO DE ESTUDIO">' + (feature.properties['DIAMETRO DE ESTUDIO'] !== null ? autolinker.link(feature.properties['DIAMETRO DE ESTUDIO'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">ZONAS DE ACUERDO CON EL REGLAMENTO DE CONSTRUCCIONES PARA EL DISTRITO FEDERAL</th>\
+                        <td class="visible-with-data" id="ZONAS DE ACUERDO CON EL REGLAMENTO DE CONSTRUCCIONES PARA EL DISTRITO FEDERAL">' + (feature.properties['ZONAS DE ACUERDO CON EL REGLAMENTO DE CONSTRUCCIONES PARA EL DISTRITO FEDERAL'] !== null ? autolinker.link(feature.properties['ZONAS DE ACUERDO CON EL REGLAMENTO DE CONSTRUCCIONES PARA EL DISTRITO FEDERAL'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">GRADO DE RIESGO DE INCENDIO NOM-002-STPS-2010</th>\
+                        <td class="visible-with-data" id="GRADO DE RIESGO DE INCENDIO NOM-002-STPS-2010">' + (feature.properties['GRADO DE RIESGO DE INCENDIO NOM-002-STPS-2010'] !== null ? autolinker.link(feature.properties['GRADO DE RIESGO DE INCENDIO NOM-002-STPS-2010'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">LATITUD</th>\
+                        <td class="visible-with-data" id="LATITUD">' + (feature.properties['LATITUD'] !== null ? autolinker.link(feature.properties['LATITUD'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">LONGITUD</th>\
+                        <td class="visible-with-data" id="LONGITUD">' + (feature.properties['LONGITUD'] !== null ? autolinker.link(feature.properties['LONGITUD'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            var content = removeEmptyRowsFromPopupContent(popupContent, feature);
+			layer.on('popupopen', function(e) {
+				addClassToPopupIfMedia(content, e.popup);
+			});
+			layer.bindPopup(content, { maxHeight: 400 });
+        }
+
+        function style_lvaroObregn_18_0() {
+            return {
+                pane: 'pane_lvaroObregn_18',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(199,228,95,1.0)',
+                interactive: true,
+            }
+        }
+        map.createPane('pane_lvaroObregn_18');
+        map.getPane('pane_lvaroObregn_18').style.zIndex = 418;
+        map.getPane('pane_lvaroObregn_18').style['mix-blend-mode'] = 'normal';
+        var layer_lvaroObregn_18 = new L.geoJson(json_lvaroObregn_18, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_lvaroObregn_18',
+            layerName: 'layer_lvaroObregn_18',
+            pane: 'pane_lvaroObregn_18',
+            onEachFeature: pop_lvaroObregn_18,
+            pointToLayer: function (feature, latlng) {
+                var context = {
+                    feature: feature,
+                    variables: {}
+                };
+                return L.circleMarker(latlng, style_lvaroObregn_18_0(feature));
+            },
+        });
+        bounds_group.addLayer(layer_lvaroObregn_18);
+        var osmGeocoder = new L.Control.Geocoder({
+            collapsed: true,
+            position: 'topleft',
+            text: 'Search',
+            title: 'Testing'
+        }).addTo(map);
+        document.getElementsByClassName('leaflet-control-geocoder-icon')[0]
+        .className += ' fa fa-search';
+        document.getElementsByClassName('leaflet-control-geocoder-icon')[0]
+        .title += 'Search for a place';
+        var overlaysTree = [
+        {label: '<b>Inmuebles</b>', selectAllCheckbox: true, children: [
+            {label: '<img src="legend/lvaroObregn_18.png" /> Álvaro Obregón', layer: layer_lvaroObregn_18},
+            {label: '<img src="legend/Azcapotzalco_17.png" /> Azcapotzalco', layer: layer_Azcapotzalco_17},
+            {label: '<img src="legend/BenitoJurez_16.png" /> Benito Juárez', layer: layer_BenitoJurez_16},
+            {label: '<img src="legend/Cuajimalpa_15.png" /> Cuajimalpa', layer: layer_Cuajimalpa_15},
+            {label: '<img src="legend/Coyoacn_14.png" /> Coyoacán', layer: layer_Coyoacn_14},
+            {label: '<img src="legend/Cuauhtmoc_13.png" /> Cuauhtémoc', layer: layer_Cuauhtmoc_13},
+            {label: '<img src="legend/GustavoAMadero_12.png" /> Gustavo A. Madero', layer: layer_GustavoAMadero_12},
+            {label: '<img src="legend/Iztacalco_11.png" /> Iztacalco', layer: layer_Iztacalco_11},
+            {label: '<img src="legend/Iztapalapa_10.png" /> Iztapalapa', layer: layer_Iztapalapa_10},
+            {label: '<img src="legend/MiguelHidalgo_9.png" /> Miguel Hidalgo', layer: layer_MiguelHidalgo_9},
+            {label: '<img src="legend/MagdalenaContreras_8.png" /> Magdalena Contreras', layer: layer_MagdalenaContreras_8},
+            {label: '<img src="legend/MilpaAlta_7.png" /> Milpa Alta', layer: layer_MilpaAlta_7},
+            {label: '<img src="legend/Tlalpan_6.png" /> Tlalpan', layer: layer_Tlalpan_6},
+            {label: '<img src="legend/Tlhuac_5.png" /> Tláhuac', layer: layer_Tlhuac_5},
+            {label: '<img src="legend/VenustianoCarranza_4.png" /> Venustiano Carranza', layer: layer_VenustianoCarranza_4},
+            {label: '<img src="legend/Xochimilco_3.png" /> Xochimilco', layer: layer_Xochimilco_3},]},
+            {label: 'Zonificación<br /><table><tr><td style="text-align: center;"><img src="legend/Zonificacin_2_ZonaI0.png" /></td><td>Zona I</td></tr><tr><td style="text-align: center;"><img src="legend/Zonificacin_2_ZonaII1.png" /></td><td>Zona II</td></tr><tr><td style="text-align: center;"><img src="legend/Zonificacin_2_ZonaIII2.png" /></td><td>Zona III</td></tr></table>', layer: layer_Zonificacin_2},
+            {label: '<img src="legend/Alcaldas_1.png" /> Alcaldías', layer: layer_Alcaldas_1},
+            {label: "Positron", layer: layer_Positron_0, radioGroup: 'bm' },]
+        var lay = L.control.layers.tree(null, overlaysTree,{
+            //namedToggle: true,
+            //selectorBack: false,
+            //closedSymbol: '&#8862; &#x1f5c0;',
+            //openedSymbol: '&#8863; &#x1f5c1;',
+            //collapseAll: 'Collapse all',
+            //expandAll: 'Expand all',
+            collapsed: false, 
+        });
+        lay.addTo(map);
+		document.addEventListener("DOMContentLoaded", function() {
+            // set new Layers List height which considers toggle icon
+            function newLayersListHeight() {
+                var layerScrollbarElement = document.querySelector('.leaflet-control-layers-scrollbar');
+                if (layerScrollbarElement) {
+                    var layersListElement = document.querySelector('.leaflet-control-layers-list');
+                    var originalHeight = layersListElement.style.height 
+                        || window.getComputedStyle(layersListElement).height;
+                    var newHeight = parseFloat(originalHeight) - 50;
+                    layersListElement.style.height = newHeight + 'px';
+                }
+            }
+            var isLayersListExpanded = true;
+            var controlLayersElement = document.querySelector('.leaflet-control-layers');
+            var toggleLayerControl = document.querySelector('.leaflet-control-layers-toggle');
+            // toggle Collapsed/Expanded and apply new Layers List height
+            toggleLayerControl.addEventListener('click', function() {
+                if (isLayersListExpanded) {
+                    controlLayersElement.classList.remove('leaflet-control-layers-expanded');
+                } else {
+                    controlLayersElement.classList.add('leaflet-control-layers-expanded');
+                }
+                isLayersListExpanded = !isLayersListExpanded;
+                newLayersListHeight()
+            });	
+			// apply new Layers List height if toggle layerstree
+			if (controlLayersElement) {
+				controlLayersElement.addEventListener('click', function(event) {
+					var toggleLayerHeaderPointer = event.target.closest('.leaflet-layerstree-header-pointer span');
+					if (toggleLayerHeaderPointer) {
+						newLayersListHeight();
+					}
+				});
+			}
+            // Collapsed/Expanded at Start to apply new height
+            setTimeout(function() {
+                toggleLayerControl.click();
+            }, 10);
+            setTimeout(function() {
+                toggleLayerControl.click();
+            }, 10);
+            // Collapsed touch/small screen
+            var isSmallScreen = window.innerWidth < 650;
+            if (isSmallScreen) {
+                setTimeout(function() {
+                    controlLayersElement.classList.remove('leaflet-control-layers-expanded');
+                    isLayersListExpanded = !isLayersListExpanded;
+                }, 500);
+            }  
+        });       
+        setBounds();
+        var i = 0;
+        layer_Alcaldas_1.eachLayer(function(layer) {
+            var context = {
+                feature: layer.feature,
+                variables: {}
+            };
+            layer.bindTooltip((layer.feature.properties['NOMBRE'] !== null?String('<div style="color: #323232; font-size: 7pt; font-family: \'Open Sans\', sans-serif;">' + layer.feature.properties['NOMBRE']) + '</div>':''), {permanent: true, offset: [-0, -16], className: 'css_Alcaldas_1'});
+            labels.push(layer);
+            totalMarkers += 1;
+              layer.added = true;
+              addLabel(layer, i);
+              i++;
+        });
+        resetLabels([layer_Alcaldas_1]);
+        map.on("zoomend", function(){
+            resetLabels([layer_Alcaldas_1]);
+        });
+        map.on("layeradd", function(){
+            resetLabels([layer_Alcaldas_1]);
+        });
+        map.on("layerremove", function(){
+            resetLabels([layer_Alcaldas_1]);
+        });
+        </script>
+    </body>
+</html>
